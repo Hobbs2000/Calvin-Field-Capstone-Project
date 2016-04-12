@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.params=newX\ newY\ width\ height
+comment0.target=Entity(int,\ int,\ int,\ int)
+comment1.params=
+comment1.target=int\ getX()
+comment10.params=
+comment10.target=boolean\ isScaled()
+comment2.params=newX
+comment2.target=void\ setX(int)
+comment3.params=
+comment3.target=int\ getY()
+comment4.params=newY
+comment4.target=void\ setY(int)
+comment5.params=
+comment5.target=int\ getWidth()
+comment6.params=
+comment6.target=int\ getHeight()
+comment7.params=
+comment7.target=boolean\ hasAnimation()
+comment8.params=g
+comment8.target=void\ animate(java.awt.Graphics)
+comment9.params=
+comment9.target=boolean\ isCollidable()
+numComments=11

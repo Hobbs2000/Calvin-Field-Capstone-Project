@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=handledEnemy\ allEntities\ sleep\ currentFrame
+comment0.target=EnemyHandler(Enemy,\ java.util.ArrayList,\ int,\ javax.swing.JFrame)
+comment0.text=\r\n\r\n
+comment1.params=
+comment1.target=void\ run()
+comment1.text=\r\n\ \ \ \ public\ void\ startMover(int\ time)\r\n\ \ \ \ {\r\n\ \ \ \ \ \ \ \ this.sleep\ \=\ time;\r\n\ \ \ \ \ \ \ \ moverRunning\ \=\ true;\r\n\ \ \ \ \ \ \ \ new\ Thread(()\ ->\ run()).start();\r\n\ \ \ \ }\r\n
+comment2.params=
+comment2.target=void\ stopAll()
+numComments=3

@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=spriteSheet\ xStart\ yStart\ width\ height\ scale
+comment0.target=Sprite(java.awt.image.BufferedImage,\ int,\ int,\ int,\ int,\ double)
+comment0.text=\r\n\r\n\ @param\ spriteSheet\r\n\ @param\ xStart\r\n\ @param\ yStart\r\n\ @param\ width\r\n\ @param\ height\r\n\ @param\ scale\r\n
+comment1.params=
+comment1.target=java.awt.image.BufferedImage\ getImage()
+comment1.text=\r\n\r\n\ @return\r\n
+comment2.params=
+comment2.target=int\ getWidth()
+comment2.text=\r\n\r\n\ @return\r\n
+comment3.params=
+comment3.target=int\ getHeight()
+comment3.text=\r\n\r\n\ @return\r\n
+numComments=4

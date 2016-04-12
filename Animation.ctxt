@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.params=spriteSheet\ subWidth\ subHeight\ number_of_images\ startX\ startY\ scale\ stall
+comment0.target=Animation(java.awt.image.BufferedImage,\ int,\ int,\ int,\ int,\ int,\ double,\ double)
+comment0.text=\r\n\ Default\ constructor\ for\ Animation\r\n\ @param\ spriteSheet\ The\ parentSprite\ sheet\ that\ the\ smaller\ sprite\ images\ are\ part\ of\r\n\ @param\ subWidth\ The\ width\ of\ each\ sprite\ square\r\n\ @param\ subHeight\ The\ height\ of\ each\ sprite\ square\r\n\ @param\ number_of_images\ How\ many\ images\ are\ on\ the\ sprite\ sheet\r\n\ @param\ startX\ Where\ the\ x-coords\ animation\ is\ initially\ set\ (expected\ to\ be\ changed)\r\n\ @param\ startY\ Where\ the\ y-coords\ animation\ is\ initially\ set\ (expected\ to\ be\ changed)\r\n\ @param\ scale\ How\ much\ larger\ or\ smaller\ the\ images\ will\ be\ displayed\r\n\ @param\ stall\ The\ spacing\ between\ the\ changing\ of\ the\ next\ image\r\n
+comment1.params=g
+comment1.target=void\ draw(java.awt.Graphics)
+comment1.text=\r\n\ Everytime\ draw\ is\ called\ the\ animation\ increments\r\n\ @param\ g\r\n
+comment2.params=
+comment2.target=void\ nextFrame()
+comment2.text=\r\n\ Changes\ the\ image\ at\ currentIndex\ to\ be\ displayed\r\n
+comment3.params=newX\ newY
+comment3.target=void\ update(int,\ int)
+comment3.text=\r\n\ Will\ update\ the\ x\ and\ y\ so\ the\ images\ are\ drawn\ in\ the\ same\ location\ as\ the\ entity\r\n
+comment4.params=index
+comment4.target=java.awt.image.BufferedImage\ imageAtIndex(int)
+comment4.text=\r\n\ Returns\ the\ sprite\ image\ at\ the\ index\ in\ the\ sprites\ array\r\n\ @param\ index\r\n\ @return\r\n
+comment5.params=
+comment5.target=void\ setupImages()
+comment5.text=\r\n\ Will\ run\ once\r\n\ Fills\ in\ the\ sprites\ array\ with\ the\ sub-images\ from\ the\ parent\ sprite-sheet\r\n
+numComments=6

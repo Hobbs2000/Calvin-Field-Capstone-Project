@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=x\ y
+comment0.target=TestGround(int,\ int)
+comment1.params=
+comment1.target=boolean\ isCollidable()
+comment2.params=
+comment2.target=int\ getWidth()
+comment3.params=
+comment3.target=int\ getHeight()
+comment4.params=
+comment4.target=boolean\ hasAnimation()
+comment5.params=g
+comment5.target=void\ animate(java.awt.Graphics)
+numComments=6
