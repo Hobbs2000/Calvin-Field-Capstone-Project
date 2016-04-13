@@ -1,10 +1,4 @@
- 
-/*
-import Enemies.Enemy;
-import Enemies.EnemyHandler;
-import Enemies.EnemySpawner;
-import Enemies.Zombie;
-*/
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,17 +48,25 @@ public class AnimationTester extends Canvas implements Runnable
     //Starts all processes for the game to begin
     public synchronized void start()
     {
+        entities.add(new Player(240, 200, 3));
+
         entities.add(new Zombie(0, 200, 5));
-        entities.add(new Zombie(250, 200, 5));
+        //entities.add(new Zombie(250, 200, 5));
 
         entities.add(new TestBlock(150, 200));
+        entities.add(new TestBlock(250, 500));
 
         entities.add(new TestGround(0, 550));
         entities.add(new TestGround(300, 550));
         entities.add(new TestGround(600, 550));
 
-        new Thread(new EnemyHandler((Enemy)entities.get(0),entities, WAIT, frame)).start();
+        Controls controls = new Controls();
+
+        super.addKeyListener(controls);
+        new Thread(new PlayerHandler((Player)entities.get(0), entities, WAIT, frame, controls)).start();
+
         new Thread(new EnemyHandler((Enemy)entities.get(1),entities, WAIT, frame)).start();
+        //new Thread(new EnemyHandler((Enemy)entities.get(2),entities, WAIT, frame)).start();
 
 
         EnemySpawner spawner = new EnemySpawner(entities);
