@@ -10,21 +10,17 @@ import java.util.ArrayList;
  */
 public class EnemyHandler implements Runnable
 {
-    //private ArrayList<Enemy> enemyList;
     private ArrayList<Entity> entities;
     private int sleep;
 
-    public boolean running = false;
+    public boolean moverRunning = false;
 
     private Enemy thisEnemy;
 
     public int frameWidth, frameHeight;
 
     /**
-     * @param handledEnemy The single enemy meant to be handled 
-     * @param allEntities The shared list of all entities 
-     * @param sleep The time in milliseconds for the program to pause
-     * @param currentFrame The frame that the handledEnemy is in 
+     *
      */
     public EnemyHandler(Enemy handledEnemy, ArrayList<Entity> allEntities, int sleep, JFrame currentFrame)
     {
@@ -36,50 +32,69 @@ public class EnemyHandler implements Runnable
         this.frameHeight = currentFrame.getHeight();
     }
 
-
-    /**
-     *  Decides what movement the enemy will do then proceeds to check for collisions
-     *  If no collisions in the direction it wants to go, move the enemy
-     */
+    //Will deal with enemies movements on a different thread
     public void run()
     {
-        running = true;
+        moverRunning = true;
 
-        while(running)
+        while(moverRunning)
         {
             boolean canMoveRight = true;
+            Entity rightCollidedEntity = null;
             boolean canMoveLeft = true;
+            Entity leftCollideEntity = null;
             boolean canMoveUp = true;
             boolean canMoveDown = true;
 
-            //This block of code does not need to be synchronized since it is not actually changing entities
+            //Gets a random number that will determine which direction the enemy goes
             int moveHorizontal = (int)(Math.random() * 200);
-            for (int i = 0; i < entities.size(); i++)
-            {
-                if ((entities.get(i) != this.thisEnemy) && !(entities.get(i) instanceof Enemy))
-                {
-                    if (moveHorizontal < 100)
-                    {
-                        canMoveLeft = false;
-                        if ((canMoveRight) && this.thisEnemy.checkRightCollision(entities.get(i), frameWidth))
-                        {
-                            canMoveRight = false;
-                        }
-                    }
-                    else if (moveHorizontal > 100)
-                    {
-                        canMoveRight = false;
-                        if ((canMoveLeft) && this.thisEnemy.checkLeftCollision(entities.get(i)))
-                        {
-                            canMoveLeft = false;
-                        }
-                    }
-                    if ((canMoveDown) && this.thisEnemy.checkBottomCollision(entities.get(i), frameHeight))
-                    {
-                        canMoveDown = false;
-                    }
-                }
-            }
+
+             for (int i = 0; i < entities.size(); i++)
+             {
+                 if ((entities.get(i) != this.thisEnemy) && !(entities.get(i) instanceof Enemy) && entities.get(i).isCollidable())
+                 {
+                     int top1= this.thisEnemy.getY();
+                     int bottom1 = this.thisEnemy.getY() + this.thisEnemy.getHeight();
+                     int right1 = this.thisEnemy.getX() + this.thisEnemy.getWidth();
+                     int left1 = this.thisEnemy.getX();
+
+                     int top2 = entities.get(i).getY();
+                     int bottom2 = entities.get(i).getY() + entities.get(i).getHeight();
+                     int right2 =entities.get(i).getX() + entities.get(i).getWidth();
+                     int left2 = entities.get(i).getX();
+
+
+                     //If the random value is less than 100, move the enemy right
+                     if (moveHorizontal < 100)
+                     {
+                         canMoveLeft = false;
+
+                         //If the enemy is colliding with any entity it cannot move right
+                         if ((canMoveRight) && this.thisEnemy.checkRightCollision(entities.get(i), frameWidth))
+                         {
+                             canMoveRight = false;
+                         }
+                     }
+                     //If the random value is greater than 100, move the enemy left
+                     else if (moveHorizontal > 100)
+                     {
+                         canMoveRight = false;
+
+                         //If the enemy is colliding with any entity it cannot move left
+                         if ((canMoveLeft) && this.thisEnemy.checkLeftCollision(entities.get(i)))
+                         {
+                             canMoveLeft = false;
+                         }
+                     }
+
+                     //Checks for collision with any entity before moving the enemy down
+                     if ((canMoveDown) && this.thisEnemy.checkBottomCollision(entities.get(i), frameHeight, 20))
+                     {
+                         canMoveDown = false;
+                     }
+                 }
+             }
+
 
 
             if (canMoveRight)
@@ -92,8 +107,21 @@ public class EnemyHandler implements Runnable
             }
             if (canMoveDown)
             {
-                this.thisEnemy.moveDown(5);
+                this.thisEnemy.moveDown(20);
             }
+
+            //These next two if statements help (but don't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
+            if ((canMoveRight == false) && (moveHorizontal < 100) && (rightCollidedEntity != null) && (Math.abs(((this.thisEnemy.getX() + this.thisEnemy.getWidth()) - rightCollidedEntity.getX())) == 1))
+            {
+                System.out.println("Case 1");
+                this.thisEnemy.moveHorizontal(true);
+            }
+            if ((canMoveLeft == false) && (moveHorizontal > 100) && (leftCollideEntity != null) && (Math.abs((this.thisEnemy.getX() - (leftCollideEntity.getX() + leftCollideEntity.getWidth()))) == 1))
+            {
+                System.out.println("Case 2");
+                this.thisEnemy.moveHorizontal(false);
+            }
+
 
             try
             {
@@ -107,11 +135,9 @@ public class EnemyHandler implements Runnable
     }
 
 
-    /**
-     * Makes running equal false, ending the loop in run() and effectivly ending the thread
-     */
-    public void stop()
+    //Ends all threads for the handler
+    public void stopAll()
     {
-        running= false;
+        moverRunning= false;
     }
 }

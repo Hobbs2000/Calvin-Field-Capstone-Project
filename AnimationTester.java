@@ -19,7 +19,7 @@ public class AnimationTester extends Canvas implements Runnable
 
     public AnimationTester()
     {
-        Dimension size = new Dimension(400, 350);
+        Dimension size = new Dimension(800, 600);
         //setPreferredSize is in the canvas class
         setPreferredSize(size);
         frame = new JFrame();

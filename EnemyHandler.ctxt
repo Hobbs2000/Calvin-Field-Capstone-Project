@@ -1,11 +1,9 @@
 #BlueJ class context
 comment0.params=handledEnemy\ allEntities\ sleep\ currentFrame
 comment0.target=EnemyHandler(Enemy,\ java.util.ArrayList,\ int,\ javax.swing.JFrame)
-comment0.text=\r\n\ @param\ handledEnemy\ The\ single\ enemy\ meant\ to\ be\ handled\ \r\n\ @param\ allEntities\ The\ shared\ list\ of\ all\ entities\ \r\n\ @param\ sleep\ The\ time\ in\ milliseconds\ for\ the\ program\ to\ pause\r\n\ @param\ currentFrame\ The\ frame\ that\ the\ handledEnemy\ is\ in\ \r\n
+comment0.text=\r\n\r\n
 comment1.params=
 comment1.target=void\ run()
-comment1.text=\r\n\ \ Decides\ what\ movement\ the\ enemy\ will\ do\ then\ proceeds\ to\ check\ for\ collisions\r\n\ \ If\ no\ collisions\ in\ the\ direction\ it\ wants\ to\ go,\ move\ the\ enemy\r\n
 comment2.params=
-comment2.target=void\ stop()
-comment2.text=\r\n\ Makes\ running\ equal\ false,\ ending\ the\ loop\ in\ run()\ and\ effectivly\ ending\ the\ thread\r\n
+comment2.target=void\ stopAll()
 numComments=3

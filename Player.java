@@ -1,8 +1,10 @@
+
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 
-    /**
+/**
  * The user controlled player
  * There may only be one player
  * Created by Calvin on 4/7/2016.
@@ -44,13 +46,22 @@ public class Player extends Entity
 
         try
         {
-            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/TestSpriteSheet.jpg")), 16, 16, 2, super.getX(), super.getY(), this.scale, 1.5);
+            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
             currentAnimation = walkForwardAnimation;
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isCollidable()
+    {
+        return true;
     }
 
 
@@ -243,7 +254,7 @@ public class Player extends Entity
         int right2 =otherEntity.getX() + otherEntity.getWidth();
         int left2 = otherEntity.getX();
 
-        if ((left1 < right2 && (right1 + speed) > left2 && top1 < bottom2 && bottom1 > top2) || ((right1 + speed) > frameWidth))
+        if ((left1 < right2 && (right1 + speed) > left2 && top1 < bottom2 && bottom1 > top2) || (right1 > frameWidth))
         {
             return true;
         }
@@ -268,7 +279,7 @@ public class Player extends Entity
         int right2 =otherEntity.getX() + otherEntity.getWidth();
         int left2 = otherEntity.getX();
 
-        if (((left1 - speed) < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2) || ((left1 - speed) < 0))
+        if (((left1 - speed) < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2) || (left1 < 0))
         {
             canMoveLeft = false;
             canMoveRight = true;
@@ -309,7 +320,7 @@ public class Player extends Entity
      * <dt><b>precondition:</b><dd> otherEntity entity must be collidable
      * @return Returns if there is a collision or not
      */
-    public boolean checkBottomCollision(Entity otherEntity, int frameHeight)
+    public boolean checkBottomCollision(Entity otherEntity, int frameHeight, int gravity)
     {
         int top1= this.getY();
         int bottom1 = this.getY() + this.getHeight();
@@ -321,7 +332,7 @@ public class Player extends Entity
         int right2 =otherEntity.getX() + otherEntity.getWidth();
         int left2 = otherEntity.getX();
 
-        if ((left1 < right2 && right1 > left2 && top1 < bottom2 && (bottom1 + speed) > top2) || ((bottom1 + speed) > frameHeight))
+        if ((left1 < right2 && right1 > left2 && top1 < bottom2 && (bottom1 + gravity) > top2) || (bottom1 > frameHeight))
         {
             return  true;
         }
@@ -330,6 +341,3 @@ public class Player extends Entity
 
 
 }
-
-
-
