@@ -44,7 +44,7 @@ public class Player extends Entity
 
         try
         {
-            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
+            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/TestSpriteSheet.jpg")), 16, 16, 2, super.getX(), super.getY(), this.scale, 1.5);
             currentAnimation = walkForwardAnimation;
         }
         catch (IOException e)

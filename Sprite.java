@@ -26,21 +26,15 @@ public class Sprite
     {
         if (spriteSheet != null)
         {
-            //All this creates a scaled sub image from the spriteSheet image
-            //Width and height scaled using the scale param
-            //image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             image = spriteSheet.getSubimage(xStart, yStart, width, height);
             this.width = width;
             this.height = height;
-            //Graphics2D g = image.createGraphics();
-            //AffineTransform trans = AffineTransform.getScaleInstance(scale, scale);
-            //g.drawRenderedImage(spriteSheet.getSubimage(xStart, yStart, width, height), trans);
         }
     }
 
     /**
-     *
-     * @return
+     * Returns this sprites image
+     * @return Image This sprites image
      */
     public BufferedImage getImage()
     {
@@ -49,7 +43,7 @@ public class Sprite
 
     /**
      *
-     * @return
+     * @return Width the original width of the sprite image
      */
     public int getWidth()
     {
@@ -58,7 +52,7 @@ public class Sprite
 
     /**
      *
-     * @return
+     * @return Height the original height of the sprite image
      */
     public int getHeight()
     {

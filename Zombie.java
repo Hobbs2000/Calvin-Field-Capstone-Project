@@ -18,6 +18,9 @@ public class Zombie extends Enemy
     private int DY = -20;
     private boolean jumping = false;
 
+    /**
+     * 
+     */
     public Zombie(int spawnX, int spawnY, double scale)
     {
         /*
@@ -76,16 +79,25 @@ public class Zombie extends Enemy
         currentAnimation.draw(g);
     }
 
+    /**
+     * 
+     */
     public boolean hasAnimation()
     {
         return true;
     }
 
+    /**
+     * 
+     */
     public int getWidth()
     {
         return (int)(originalSpriteWidth * scale);
     }
 
+    /**
+     * 
+     */
     public int getHeight()
     {
         return (int)(originalSpriteHeight * scale);

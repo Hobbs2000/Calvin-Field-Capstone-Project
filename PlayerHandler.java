@@ -24,9 +24,9 @@ public class PlayerHandler implements Runnable
 
     /**
      *
-     * @param player
-     * @param entityList
-     * @param frame
+     * @param player The user controlled player 
+     * @param entityList The shared list of all entities
+     * @param frame The main frame that the player is currently in 
      */
     public PlayerHandler(Player player, ArrayList<Entity> entityList, int sleep, JFrame frame, Controls controls)
     {
@@ -40,7 +40,8 @@ public class PlayerHandler implements Runnable
     }
 
     /**
-     *
+     * Checks for key presses and then checks for collisions based on what keys were pressed
+     * Will move the player if the corresponding key was pressed and there is no collision
      */
     public void run()
     {
@@ -63,7 +64,7 @@ public class PlayerHandler implements Runnable
                 if ((entities.get(i) != this.thisPlayer) && entities.get(i).isCollidable())
                 {
                     //If the right key is pressed and a collision is detected, the player cannot move right
-                    System.out.println(controls.right);
+                    System.out.println("Right:"+controls.right);
                     if (controls.right)
                     {
                         canMoveLeft = false;
@@ -75,6 +76,7 @@ public class PlayerHandler implements Runnable
                     }
                     
                     //If the left key is pressed and a collision is detected, the player cannot move left
+                    System.out.println("Left:"+controls.left);
                     if (controls.left)
                     {
                         canMoveRight = false;
@@ -122,7 +124,7 @@ public class PlayerHandler implements Runnable
     }
 
     /**
-     *
+     * Makes running equal false, ending the loop in run() and effectivly ending the thread
      */
     public void stop()
     {

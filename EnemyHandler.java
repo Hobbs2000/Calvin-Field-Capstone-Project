@@ -14,14 +14,17 @@ public class EnemyHandler implements Runnable
     private ArrayList<Entity> entities;
     private int sleep;
 
-    public boolean moverRunning = false;
+    public boolean running = false;
 
     private Enemy thisEnemy;
 
     public int frameWidth, frameHeight;
 
     /**
-     *
+     * @param handledEnemy The single enemy meant to be handled 
+     * @param allEntities The shared list of all entities 
+     * @param sleep The time in milliseconds for the program to pause
+     * @param currentFrame The frame that the handledEnemy is in 
      */
     public EnemyHandler(Enemy handledEnemy, ArrayList<Entity> allEntities, int sleep, JFrame currentFrame)
     {
@@ -33,58 +36,50 @@ public class EnemyHandler implements Runnable
         this.frameHeight = currentFrame.getHeight();
     }
 
-    /*
-    public void startMover(int time)
-    {
-        this.sleep = time;
-        moverRunning = true;
-        new Thread(() -> run()).start();
-    }
-    */
 
-
-    //Will deal with enemies movements on a different thread
+    /**
+     *  Decides what movement the enemy will do then proceeds to check for collisions
+     *  If no collisions in the direction it wants to go, move the enemy
+     */
     public void run()
     {
-        moverRunning = true;
+        running = true;
 
-        while(moverRunning)
+        while(running)
         {
             boolean canMoveRight = true;
             boolean canMoveLeft = true;
             boolean canMoveUp = true;
             boolean canMoveDown = true;
 
-            //Any thread that uses/changes the entities ArrayList must be in a synchronized code block
-
+            //This block of code does not need to be synchronized since it is not actually changing entities
             int moveHorizontal = (int)(Math.random() * 200);
-             for (int i = 0; i < entities.size(); i++)
-             {
-                 if ((entities.get(i) != this.thisEnemy) && !(entities.get(i) instanceof Enemy))
-                 {
-                     if (moveHorizontal < 100)
-                     {
-                         canMoveLeft = false;
-                         if ((canMoveRight) && this.thisEnemy.checkRightCollision(entities.get(i), frameWidth))
-                         {
-                             canMoveRight = false;
-                         }
-                     }
-                     else if (moveHorizontal > 100)
-                     {
-                         canMoveRight = false;
-                         if ((canMoveLeft) && this.thisEnemy.checkLeftCollision(entities.get(i)))
-                         {
-                             canMoveLeft = false;
-                         }
-                     }
-                     if ((canMoveDown) && this.thisEnemy.checkBottomCollision(entities.get(i), frameHeight))
-                     {
-                         canMoveDown = false;
-                     }
-                 }
-             }
-
+            for (int i = 0; i < entities.size(); i++)
+            {
+                if ((entities.get(i) != this.thisEnemy) && !(entities.get(i) instanceof Enemy))
+                {
+                    if (moveHorizontal < 100)
+                    {
+                        canMoveLeft = false;
+                        if ((canMoveRight) && this.thisEnemy.checkRightCollision(entities.get(i), frameWidth))
+                        {
+                            canMoveRight = false;
+                        }
+                    }
+                    else if (moveHorizontal > 100)
+                    {
+                        canMoveRight = false;
+                        if ((canMoveLeft) && this.thisEnemy.checkLeftCollision(entities.get(i)))
+                        {
+                            canMoveLeft = false;
+                        }
+                    }
+                    if ((canMoveDown) && this.thisEnemy.checkBottomCollision(entities.get(i), frameHeight))
+                    {
+                        canMoveDown = false;
+                    }
+                }
+            }
 
 
             if (canMoveRight)
@@ -95,10 +90,10 @@ public class EnemyHandler implements Runnable
             {
                 this.thisEnemy.moveHorizontal(false);
             }
-             if (canMoveDown)
-             {
-                 this.thisEnemy.moveDown(5);
-             }
+            if (canMoveDown)
+            {
+                this.thisEnemy.moveDown(5);
+            }
 
             try
             {
@@ -112,9 +107,11 @@ public class EnemyHandler implements Runnable
     }
 
 
-    //Ends all threads for the handler
-    public void stopAll()
+    /**
+     * Makes running equal false, ending the loop in run() and effectivly ending the thread
+     */
+    public void stop()
     {
-        moverRunning= false;
+        running= false;
     }
 }

@@ -1,11 +1,11 @@
 #BlueJ class context
 comment0.params=player\ entityList\ sleep\ frame\ controls
 comment0.target=PlayerHandler(Player,\ java.util.ArrayList,\ int,\ javax.swing.JFrame,\ Controls)
-comment0.text=\r\n\r\n\ @param\ player\r\n\ @param\ entityList\r\n\ @param\ frame\r\n
+comment0.text=\r\n\r\n\ @param\ player\ The\ user\ controlled\ player\ \r\n\ @param\ entityList\ The\ shared\ list\ of\ all\ entities\r\n\ @param\ frame\ The\ main\ frame\ that\ the\ player\ is\ currently\ in\ \r\n
 comment1.params=
 comment1.target=void\ run()
-comment1.text=\r\n\r\n
+comment1.text=\r\n\ Checks\ for\ key\ presses\ and\ then\ checks\ for\ collisions\ based\ on\ what\ keys\ were\ pressed\r\n\ Will\ move\ the\ player\ if\ the\ corresponding\ key\ was\ pressed\ and\ there\ is\ no\ collision\r\n
 comment2.params=
 comment2.target=void\ stop()
-comment2.text=\r\n\r\n
+comment2.text=\r\n\ Makes\ running\ equal\ false,\ ending\ the\ loop\ in\ run()\ and\ effectivly\ ending\ the\ thread\r\n
 numComments=3
