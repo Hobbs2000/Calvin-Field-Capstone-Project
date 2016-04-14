@@ -86,6 +86,7 @@ public class EnemyHandler implements Runnable
                              canMoveLeft = false;
                          }
                      }
+                     
 
                      //Checks for collision with any entity before moving the enemy down
                      if ((canMoveDown) && this.thisEnemy.checkBottomCollision(entities.get(i), frameHeight, 20))
@@ -101,26 +102,29 @@ public class EnemyHandler implements Runnable
             {
                 this.thisEnemy.moveHorizontal(true);
             }
-            else if (canMoveLeft)
+            if (canMoveLeft)
             {
                 this.thisEnemy.moveHorizontal(false);
             }
+            
             if (canMoveDown)
             {
                 this.thisEnemy.moveDown(20);
             }
-
-            //These next two if statements help (but don't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
-            if ((canMoveRight == false) && (moveHorizontal < 100) && (rightCollidedEntity != null) && (Math.abs(((this.thisEnemy.getX() + this.thisEnemy.getWidth()) - rightCollidedEntity.getX())) == 1))
+   
+            //These next two if statements help (but doesn't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
+            //This problem occurs when one moving entity is on top of another, then when the top one falls off it immediatly tries to go into the lower entity causing both entities to become stuck
+            if ((canMoveRight == false) && (canMoveDown == false) && (moveHorizontal < 100) && (rightCollidedEntity != null) && (Math.abs(((this.thisEnemy.getX() + this.thisEnemy.getWidth()) - rightCollidedEntity.getX())) == 1))
             {
                 System.out.println("Case 1");
                 this.thisEnemy.moveHorizontal(true);
             }
-            if ((canMoveLeft == false) && (moveHorizontal > 100) && (leftCollideEntity != null) && (Math.abs((this.thisEnemy.getX() - (leftCollideEntity.getX() + leftCollideEntity.getWidth()))) == 1))
+            if ((canMoveLeft == false) && (canMoveDown == false)&& (moveHorizontal > 100) && (leftCollideEntity != null) && (Math.abs((this.thisEnemy.getX() - (leftCollideEntity.getX() + leftCollideEntity.getWidth()))) == 1))
             {
                 System.out.println("Case 2");
                 this.thisEnemy.moveHorizontal(false);
             }
+            
 
 
             try

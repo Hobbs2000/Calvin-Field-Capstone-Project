@@ -14,6 +14,7 @@ public class Animation
     private BufferedImage parentSpriteSheet;
     private int x, y;
     private double scale;
+    private int startImageIndex;
     private int currentIndex = 0;
     private double maxStall;
     private double currentStall = 0;
@@ -102,7 +103,6 @@ public class Animation
      */
     public void setupImages()
     {
-
         int spriteIndex = 0;
         for(int row = 0; row < parentSpriteSheet.getHeight(); row += sectionHeight)
         {

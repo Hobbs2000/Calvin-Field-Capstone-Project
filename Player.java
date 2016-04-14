@@ -12,6 +12,7 @@ import java.io.IOException;
 public class Player extends Entity
 {
     private Animation walkForwardAnimation;
+    private Animation walkBackAnimation;
     private Animation currentAnimation;
     private int originalSpriteWidth = 32;
     private int originalSpriteHeight = 36;
@@ -30,6 +31,9 @@ public class Player extends Entity
     private boolean movingRight = false;
     private boolean canMoveLeft = true;
     private boolean movingLeft = false;
+    
+    private int yVector = -40;
+    private boolean jumping = false;
 
 
     /**
@@ -48,6 +52,8 @@ public class Player extends Entity
         {
             walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
             currentAnimation = walkForwardAnimation;
+            
+            //walkBackAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
         }
         catch (IOException e)
         {
@@ -64,7 +70,6 @@ public class Player extends Entity
         return true;
     }
 
-
     /**
      * Moves the player's x coordinate speed amount
      * @param direction True means right and false means left
@@ -76,12 +81,14 @@ public class Player extends Entity
             movingRight = true;
             movingRight = false;
             this.setX(super.getX() + this.speed);
+            this.currentAnimation = walkForwardAnimation;
         }
         else
         {
             movingLeft = true;
             movingRight = false;
             this.setX(super.getX() - this.speed);
+            //this.currentAnimation = walkBackAnimation;
         }
         walkForwardAnimation.update(super.getX(), super.getY());
 
@@ -105,7 +112,29 @@ public class Player extends Entity
             super.setY(super.getY() + gravity);
         }
     }
+    
+    /**
+     * 
+     */
+    public void moveUp(int amount)
+    {
+        super.setY(super.getY() - amount);
+    }
 
+    /**
+     * 
+     */
+    public void jump(int gravity)
+    {
+        jumping = true;
+        yVector -= gravity;
+        this.moveUp(yVector);
+        
+        if (super.getY() < 30)
+        {
+            jumping = false;
+        }
+    }
 
     /**
      * Will call the draw method for the currentAnimation for the player
@@ -125,6 +154,14 @@ public class Player extends Entity
         return true;
     }
 
+    /**
+     * 
+     */
+    public boolean isJumping()
+    {
+        return jumping;
+    }
+    
     /**
      * Will multiply the original pixel width of the player by its scale to get the current real pixel width
      * @return Returns the actually width of the player
@@ -154,7 +191,6 @@ public class Player extends Entity
         {
             return true;
         }
-
         return false;
     }
 
@@ -166,10 +202,8 @@ public class Player extends Entity
     {
         if ((this.getX() - this.speed) < 0)
         {
-
             return true;
         }
-
         return false;
     }
     /**
@@ -182,7 +216,6 @@ public class Player extends Entity
         {
             return true;
         }
-
         return false;
     }
     /**

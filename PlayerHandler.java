@@ -124,13 +124,14 @@ public class PlayerHandler implements Runnable
                 this.thisPlayer.moveDown(20);
             }
 
-            //These next two if statements help (but don't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
-            if ((canMoveRight == false) && (controls.right) && (rightCollidedEntity != null) && (Math.abs(((this.thisPlayer.getX() + this.thisPlayer.getWidth()) - rightCollidedEntity.getX())) == 1))
+            //These next two if statements help (but doesn't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
+            //This problem occurs when one moving entity is on top of another, then when the top one falls off it immediatly tries to go into the lower entity causing both entities to become stuck
+            if ((canMoveRight == false) && (canMoveDown == false)&& (controls.right) && (rightCollidedEntity != null) && (Math.abs(((this.thisPlayer.getX() + this.thisPlayer.getWidth()) - rightCollidedEntity.getX())) == 1))
             {
                 System.out.println("Case 1");
                 this.thisPlayer.moveHorizontal(true);
             }
-            if ((canMoveLeft == false) && (controls.left) && (leftCollideEntity != null) && (Math.abs((this.thisPlayer.getX() - (leftCollideEntity.getX() + leftCollideEntity.getWidth()))) == 1))
+            if ((canMoveLeft == false) && (canMoveDown == false) &&(controls.left) && (leftCollideEntity != null) && (Math.abs((this.thisPlayer.getX() - (leftCollideEntity.getX() + leftCollideEntity.getWidth()))) == 1))
             {
                 System.out.println("Case 2");
                 this.thisPlayer.moveHorizontal(false);
