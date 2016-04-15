@@ -21,7 +21,7 @@ public class Player extends Entity
     //These are the default values and may be changed
     private int damage = 10;
     private int health = 100;
-    private int speed = 10;
+    private int speed = 15;
 
     private boolean canMoveUp = true;
     private boolean movingUp = false;
@@ -158,6 +158,14 @@ public class Player extends Entity
     public boolean isJumping()
     {
         return jumping;
+    }
+    
+    /**
+     * 
+     */
+    public int getY_Velocity()
+    {
+        return yVelocity;
     }
     
     /**
@@ -322,7 +330,7 @@ public class Player extends Entity
      * <dt><b>precondition:</b><dd> otherEntity entity must be collidable
      * @return Returns if there is a collision or not
      */
-    public boolean checkTopCollision(Entity otherEntity)
+    public boolean checkTopCollision(Entity otherEntity, int currentJumpHeight)
     {
         int top1= this.getY();
         int bottom1 = this.getY() + this.getHeight();
@@ -334,7 +342,7 @@ public class Player extends Entity
         int right2 =otherEntity.getX() + otherEntity.getWidth();
         int left2 = otherEntity.getX();
 
-        if ((left1 < right2 && right1 > left2 && (top1 - speed) < bottom2 && bottom1 > top2) || ((top1 - speed) < 0))
+        if ((left1 < right2 && right1 > left2 && (top1 - currentJumpHeight) < bottom2 && bottom1 > top2) || ((top1 - currentJumpHeight) < 0))
         {
             return  true;
         }

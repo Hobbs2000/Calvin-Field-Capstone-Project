@@ -98,7 +98,6 @@ public class PlayerHandler implements Runnable
                     if (controls.left)
                     {
                         canMoveRight = false;
-
                         if (this.thisPlayer.checkLeftCollision(entities.get(i)))
                         {
                             canMoveLeft = false;
@@ -108,14 +107,24 @@ public class PlayerHandler implements Runnable
                     }
 
                     //Checks for collision with any entity before moving the enemy down
-                    if ((canMoveDown) && this.thisPlayer.checkBottomCollision(entities.get(i), frameHeight, 20))
+                    //If the player is jumping and the players yVelocity is positive, then replace the gravity parameter with that yVelocity
+                    if ((canMoveDown) && this.thisPlayer.isJumping() && (this.thisPlayer.getY_Velocity() > 0) && (this.thisPlayer.checkBottomCollision(entities.get(i), frameHeight, this.thisPlayer.getY_Velocity())))
+                    {
+                        canMoveDown = false;
+                        //Set which entity it collided with
+                        bottomCollideEntity = entities.get(i);
+                    }
+                    //Otherwise, do the regular falling collision detection
+                    else if ((canMoveDown) && this.thisPlayer.checkBottomCollision(entities.get(i), frameHeight, 20))
                     {
                         canMoveDown = false;
                         //Set which entity it collided with
                         bottomCollideEntity = entities.get(i);
                     }
 
-                    if ((canMoveUp) && this.thisPlayer.checkTopCollision(entities.get(i)))
+                    System.out.println("isJumping:"+this.thisPlayer.isJumping());
+                    System.out.println("yVel:"+this.thisPlayer.getY_Velocity());
+                    if ((canMoveUp) && this.thisPlayer.isJumping() && (this.thisPlayer.getY_Velocity() < 0) && this.thisPlayer.checkTopCollision(entities.get(i), this.thisPlayer.getY_Velocity()))
                     {
                         canMoveUp = false;
                         //Set which entity it collided with
@@ -139,7 +148,7 @@ public class PlayerHandler implements Runnable
             {
                 this.thisPlayer.jump(20);
             }
-            else if (this.thisPlayer.isJumping() && canMoveDown)
+            else if (this.thisPlayer.isJumping() && canMoveDown && canMoveUp)
             {
                 this.thisPlayer.jump(20);
             }
@@ -165,6 +174,7 @@ public class PlayerHandler implements Runnable
                 this.thisPlayer.moveHorizontal(false);
             }
 
+            
             try
             {
                 Thread.sleep(this.sleep);
@@ -173,6 +183,7 @@ public class PlayerHandler implements Runnable
             {
                 e.printStackTrace();
             }
+            
 
         }
     }
