@@ -1,5 +1,4 @@
 
-
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
  * This will handle the players movements and collision detection
  * Will be on a separate thread
  * Has a keyboard listener class that will use input for player control
+ * Most of the logic will be here
  * Created by Calvin on 4/12/2016.
  */
 public class PlayerHandler implements Runnable
@@ -58,7 +58,9 @@ public class PlayerHandler implements Runnable
             boolean canMoveLeft = true;
             Entity leftCollideEntity = null;
             boolean canMoveDown = true;
-
+            Entity bottomCollideEntity = null;
+            boolean canMoveUp = true;
+            Entity topCollideEntity = null;
 
 
             for (int i = 0; i < entities.size(); i++)
@@ -87,10 +89,11 @@ public class PlayerHandler implements Runnable
                         if (this.thisPlayer.checkRightCollision(entities.get(i), frameWidth))
                         {
                             canMoveRight = false;
+                            //Set which entity it collided with
                             rightCollidedEntity = entities.get(i);
                         }
                     }
-                    
+
                     //If the left key is pressed and a collision is detected, the player cannot move left
                     if (controls.left)
                     {
@@ -99,6 +102,8 @@ public class PlayerHandler implements Runnable
                         if (this.thisPlayer.checkLeftCollision(entities.get(i)))
                         {
                             canMoveLeft = false;
+                            //Set which entity it collided with
+                            leftCollideEntity = entities.get(i);
                         }
                     }
 
@@ -106,11 +111,20 @@ public class PlayerHandler implements Runnable
                     if ((canMoveDown) && this.thisPlayer.checkBottomCollision(entities.get(i), frameHeight, 20))
                     {
                         canMoveDown = false;
+                        //Set which entity it collided with
+                        bottomCollideEntity = entities.get(i);
+                    }
+
+                    if ((canMoveUp) && this.thisPlayer.checkTopCollision(entities.get(i)))
+                    {
+                        canMoveUp = false;
+                        //Set which entity it collided with
+                        topCollideEntity = entities.get(i);
                     }
                 }
             }
 
-
+            //Will actually move the player based on collisions and what keys were pressed
             if (canMoveRight)
             {
                 this.thisPlayer.moveHorizontal(true);
@@ -119,25 +133,37 @@ public class PlayerHandler implements Runnable
             {
                 this.thisPlayer.moveHorizontal(false);
             }
-            if (canMoveDown)
+
+            //Will start the jumping sequence
+            if (canMoveUp && controls.space && (this.thisPlayer.isJumping() == false))
+            {
+                this.thisPlayer.jump(20);
+            }
+            else if (this.thisPlayer.isJumping() && canMoveDown)
+            {
+                this.thisPlayer.jump(20);
+            }
+            else
+            {
+                this.thisPlayer.stopJumping();
+            }
+
+            //Will only start the regular falling if the player is not already jumping
+            if (canMoveDown && !this.thisPlayer.isJumping())
             {
                 this.thisPlayer.moveDown(20);
             }
 
             //These next two if statements help (but doesn't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
             //This problem occurs when one moving entity is on top of another, then when the top one falls off it immediatly tries to go into the lower entity causing both entities to become stuck
-            if ((canMoveRight == false) && (canMoveDown == false)&& (controls.right) && (rightCollidedEntity != null) && (Math.abs(((this.thisPlayer.getX() + this.thisPlayer.getWidth()) - rightCollidedEntity.getX())) == 1))
+            if ((rightCollidedEntity != null) && ((topCollideEntity == rightCollidedEntity) || (bottomCollideEntity == leftCollideEntity)) && controls.right)
             {
-                System.out.println("Case 1");
                 this.thisPlayer.moveHorizontal(true);
             }
-            if ((canMoveLeft == false) && (canMoveDown == false) &&(controls.left) && (leftCollideEntity != null) && (Math.abs((this.thisPlayer.getX() - (leftCollideEntity.getX() + leftCollideEntity.getWidth()))) == 1))
+            else if ((leftCollideEntity != null) && ((topCollideEntity == leftCollideEntity) || (bottomCollideEntity == leftCollideEntity)) && controls.left)
             {
-                System.out.println("Case 2");
                 this.thisPlayer.moveHorizontal(false);
             }
-
-
 
             try
             {
@@ -147,6 +173,7 @@ public class PlayerHandler implements Runnable
             {
                 e.printStackTrace();
             }
+
         }
     }
 

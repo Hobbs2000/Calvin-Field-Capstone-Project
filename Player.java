@@ -25,14 +25,11 @@ public class Player extends Entity
 
     private boolean canMoveUp = true;
     private boolean movingUp = false;
-    private boolean canMoveDown = true;
     private boolean movingDown = false;
-    private boolean canMoveRight = true;
     private boolean movingRight = false;
-    private boolean canMoveLeft = true;
     private boolean movingLeft = false;
     
-    private int yVector = -40;
+    private int yVelocity = -90;
     private boolean jumping = false;
 
 
@@ -105,12 +102,9 @@ public class Player extends Entity
      */
     public void moveDown(int gravity)
     {
-        if ( canMoveDown == true )
-        {
-            movingDown = true;
-            movingUp = false;
-            super.setY(super.getY() + gravity);
-        }
+        movingDown = true;
+        movingUp = false;
+        super.setY(super.getY() + gravity);
     }
     
     /**
@@ -127,13 +121,17 @@ public class Player extends Entity
     public void jump(int gravity)
     {
         jumping = true;
-        yVector -= gravity;
-        this.moveUp(yVector);
-        
-        if (super.getY() < 30)
-        {
-            jumping = false;
-        }
+        yVelocity += gravity;
+        super.setY(super.getY() + yVelocity);
+    }
+    
+    /**
+     * 
+     */
+    public void stopJumping()
+    {
+        jumping = false;
+        yVelocity = -90;
     }
 
     /**
@@ -314,13 +312,8 @@ public class Player extends Entity
 
         if (((left1 - speed) < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2) || (left1 < 0))
         {
-            canMoveLeft = false;
-            canMoveRight = true;
             return true;
         }
-
-        canMoveRight = false;
-        canMoveLeft = true;
         return false;
     }
 

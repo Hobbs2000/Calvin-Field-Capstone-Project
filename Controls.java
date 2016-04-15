@@ -12,7 +12,7 @@ public class Controls implements KeyListener
     //Creates an array for all the keys on the keyboard
     private boolean[] keys = new boolean[120];
 
-    public boolean up, down, left, right, jump;
+    public boolean up, down, left, right, space;
 
     /**
      *
@@ -25,7 +25,7 @@ public class Controls implements KeyListener
         right = keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_D];
         down = keys[KeyEvent.VK_DOWN] || keys[KeyEvent.VK_S];
         left = keys[KeyEvent.VK_LEFT] || keys[KeyEvent.VK_A];
-        jump = keys[KeyEvent.VK_SPACE];
+        space = keys[KeyEvent.VK_SPACE];
     }
 
     /**
