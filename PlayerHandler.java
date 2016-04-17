@@ -21,6 +21,8 @@ public class PlayerHandler implements Runnable
     private Player thisPlayer;
     private Controls controls;
 
+    private Level currentLevel;
+
     public int frameWidth, frameHeight;
 
     /**
@@ -29,13 +31,13 @@ public class PlayerHandler implements Runnable
      * @param entityList
      * @param frame
      */
-    public PlayerHandler(Player player, ArrayList<Entity> entityList, int sleep, JFrame frame, Controls controls)
+    public PlayerHandler(Player player, ArrayList<Entity> entityList, int sleep, JFrame frame, Controls controls, Level level)
     {
         this.thisPlayer = player;
         this.entities = entityList;
         this.controls = controls;
         this.sleep = sleep;
-
+        this.currentLevel = level;
         this.frameWidth = frame.getWidth();
         this.frameHeight = frame.getHeight();
     }
@@ -63,118 +65,20 @@ public class PlayerHandler implements Runnable
             Entity topCollideEntity = null;
 
 
-            for (int i = 0; i < entities.size(); i++)
-            {
-
-                if ((entities.get(i) != this.thisPlayer) && entities.get(i).isCollidable())
-                {
-
-                    int top1= this.thisPlayer.getY();
-                    int bottom1 = this.thisPlayer.getY() + this.thisPlayer.getHeight();
-                    int right1 = this.thisPlayer.getX() + this.thisPlayer.getWidth();
-                    int left1 = this.thisPlayer.getX();
-
-                    int top2 = entities.get(i).getY();
-                    int bottom2 = entities.get(i).getY() + entities.get(i).getHeight();
-                    int right2 =entities.get(i).getX() + entities.get(i).getWidth();
-                    int left2 = entities.get(i).getX();
-
-
-
-                    //If the right key is pressed and a collision is detected, the player cannot move right
-                    if (controls.right)
-                    {
-                        canMoveLeft = false;
-
-                        if (this.thisPlayer.checkRightCollision(entities.get(i), frameWidth))
-                        {
-                            canMoveRight = false;
-                            //Set which entity it collided with
-                            rightCollidedEntity = entities.get(i);
-                        }
-                    }
-
-                    //If the left key is pressed and a collision is detected, the player cannot move left
-                    if (controls.left)
-                    {
-                        canMoveRight = false;
-                        if (this.thisPlayer.checkLeftCollision(entities.get(i)))
-                        {
-                            canMoveLeft = false;
-                            //Set which entity it collided with
-                            leftCollideEntity = entities.get(i);
-                        }
-                    }
-
-                    //Checks for collision with any entity before moving the enemy down
-                    //If the player is jumping and the players yVelocity is positive, then replace the gravity parameter with that yVelocity
-                    if ((canMoveDown) && this.thisPlayer.isJumping() && (this.thisPlayer.getY_Velocity() > 0) && (this.thisPlayer.checkBottomCollision(entities.get(i), frameHeight, this.thisPlayer.getY_Velocity())))
-                    {
-                        canMoveDown = false;
-                        //Set which entity it collided with
-                        bottomCollideEntity = entities.get(i);
-                    }
-                    //Otherwise, do the regular falling collision detection
-                    else if ((canMoveDown) && this.thisPlayer.checkBottomCollision(entities.get(i), frameHeight, 20))
-                    {
-                        canMoveDown = false;
-                        //Set which entity it collided with
-                        bottomCollideEntity = entities.get(i);
-                    }
-
-                    System.out.println("isJumping:"+this.thisPlayer.isJumping());
-                    System.out.println("yVel:"+this.thisPlayer.getY_Velocity());
-                    if ((canMoveUp) && this.thisPlayer.isJumping() && (this.thisPlayer.getY_Velocity() < 0) && this.thisPlayer.checkTopCollision(entities.get(i), this.thisPlayer.getY_Velocity()))
-                    {
-                        canMoveUp = false;
-                        //Set which entity it collided with
-                        topCollideEntity = entities.get(i);
-                    }
-                }
-            }
+            //Move down because of gravity
+            movePlayerDown(40);
 
             //Will actually move the player based on collisions and what keys were pressed
-            if (canMoveRight)
+            if (controls.right)
             {
-                this.thisPlayer.moveHorizontal(true);
+                movePlayerRight(this.thisPlayer.getSpeed());
             }
-            if (canMoveLeft)
+            if (controls.left)
             {
-                this.thisPlayer.moveHorizontal(false);
-            }
-
-            //Will start the jumping sequence
-            if (canMoveUp && controls.space && (this.thisPlayer.isJumping() == false))
-            {
-                this.thisPlayer.jump(20);
-            }
-            else if (this.thisPlayer.isJumping() && canMoveDown && canMoveUp)
-            {
-                this.thisPlayer.jump(20);
-            }
-            else
-            {
-                this.thisPlayer.stopJumping();
+                movePlayerLeft(this.thisPlayer.getSpeed());
             }
 
-            //Will only start the regular falling if the player is not already jumping
-            if (canMoveDown && !this.thisPlayer.isJumping())
-            {
-                this.thisPlayer.moveDown(20);
-            }
 
-            //These next two if statements help (but doesn't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
-            //This problem occurs when one moving entity is on top of another, then when the top one falls off it immediatly tries to go into the lower entity causing both entities to become stuck
-            if ((rightCollidedEntity != null) && ((topCollideEntity == rightCollidedEntity) || (bottomCollideEntity == leftCollideEntity)) && controls.right)
-            {
-                this.thisPlayer.moveHorizontal(true);
-            }
-            else if ((leftCollideEntity != null) && ((topCollideEntity == leftCollideEntity) || (bottomCollideEntity == leftCollideEntity)) && controls.left)
-            {
-                this.thisPlayer.moveHorizontal(false);
-            }
-
-            
             try
             {
                 Thread.sleep(this.sleep);
@@ -183,8 +87,148 @@ public class PlayerHandler implements Runnable
             {
                 e.printStackTrace();
             }
-            
 
+        }
+    }
+
+    /**
+     *
+     * @param dx
+     */
+    public void movePlayerRight(int dx)
+    {
+        //Top corner right y
+        int tcRightY = this.thisPlayer.getY();
+        //Top corner right x
+        int tcRightX = this.thisPlayer.getX() + thisPlayer.getWidth();
+
+        //Bottom corner right y
+        int bcRightY = this.thisPlayer.getY() + this.thisPlayer.getHeight();
+        //Bottom corner right x
+        int bcRightX = tcRightX;
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int rMiddleY = this.thisPlayer.getY() + (this.thisPlayer.getHeight() / 2);
+        //Bottom middle x
+        int rMiddleX = tcRightX;
+
+        Tile tile1 = currentLevel.getTile(tcRightX + dx, tcRightY);
+        Tile tile2 = currentLevel.getTile(bcRightX + dx, bcRightY);
+        Tile tile3 = currentLevel.getTile(rMiddleX + dx, rMiddleY);
+
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisPlayer.setX(this.thisPlayer.getX() + dx);
+        }
+    }
+
+    /**
+     *
+     * @param dx
+     */
+    public void movePlayerLeft(int dx)
+    {
+        //Top left corner left y
+        int tcLeftY = this.thisPlayer.getY();
+        //Top corner right x
+        int tcLeftX = this.thisPlayer.getX();
+
+        //Bottom left corner right y
+        int bcLeftY = this.thisPlayer.getY() + thisPlayer.getHeight();
+        //Bottom corner right x
+        int bcLeftX = this.thisPlayer.getX();
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int lMiddleY = this.thisPlayer.getY() + (this.thisPlayer.getHeight() / 2);
+        //Bottom middle x
+        int lMiddleX = this.thisPlayer.getX();
+
+        Tile tile1 = currentLevel.getTile(tcLeftX - dx, tcLeftY);
+        Tile tile2 = currentLevel.getTile(bcLeftX - dx, bcLeftY);
+        Tile tile3 = currentLevel.getTile(lMiddleX - dx, lMiddleY);
+
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisPlayer.setX(this.thisPlayer.getX() - dx);
+        }
+    }
+
+    /**
+     *
+     * @param dy
+     */
+    public void movePlayerDown(int dy)
+    {
+        //Bottom corner left y
+        int bcLeftY = this.thisPlayer.getY() + this.thisPlayer.getHeight();
+
+        //Bottom corner right y
+        int bcRightY = bcLeftY;
+        //Bottom corner right x
+        int bcRightX = this.thisPlayer.getX() + this.thisPlayer.getWidth();
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int bMiddleY = bcLeftY;
+        //Bottom middle x
+        int bMiddleX = this.thisPlayer.getX() + (this.thisPlayer.getWidth() / 2);
+
+        Tile tile1 = currentLevel.getTile(this.thisPlayer.getX(), bcLeftY + dy);
+        Tile tile2 = currentLevel.getTile(bcRightX, bcRightY + dy);
+        Tile tile3 = currentLevel.getTile(bMiddleX, bMiddleY + dy);
+
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisPlayer.setY(this.thisPlayer.getY() + dy);
+        }
+    }
+
+    /**
+     *
+     * @param dy
+     */
+    public void movePlayerUp(int dy)
+    {
+        //Top corner left y
+        int tcLeftY = this.thisPlayer.getY();
+        //Top corner left x
+        int tcLeftX = this.thisPlayer.getX();
+
+        //Bottom corner right y
+        int bcRightY = tcLeftY;
+        //Bottom corner right x
+        int bcRightX = this.thisPlayer.getX() + this.thisPlayer.getHeight();
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int bMiddleY = tcLeftY;
+        //Bottom middle x
+        int bMiddleX = this.thisPlayer.getX() + (this.thisPlayer.getWidth() / 2);
+
+        Tile tile1 = currentLevel.getTile(tcLeftX, tcLeftY - dy);
+        Tile tile2 = currentLevel.getTile(bcRightX, bcRightY - dy);
+        Tile tile3 = currentLevel.getTile(bMiddleX, bMiddleY - dy);
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisPlayer.setY(this.thisPlayer.getY() - dy);
         }
     }
 

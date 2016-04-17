@@ -1,5 +1,4 @@
 
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
@@ -21,15 +20,15 @@ public class Player extends Entity
     //These are the default values and may be changed
     private int damage = 10;
     private int health = 100;
-    private int speed = 15;
+    private int speed = 20;
 
-    private boolean canMoveUp = true;
     private boolean movingUp = false;
+    private boolean canMoveDown = true;
     private boolean movingDown = false;
     private boolean movingRight = false;
     private boolean movingLeft = false;
-    
-    private int yVelocity = -90;
+
+    private int yVelocity = -150;
     private boolean jumping = false;
 
 
@@ -49,7 +48,7 @@ public class Player extends Entity
         {
             walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
             currentAnimation = walkForwardAnimation;
-            
+
             //walkBackAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
         }
         catch (IOException e)
@@ -85,7 +84,7 @@ public class Player extends Entity
             movingLeft = true;
             movingRight = false;
             this.setX(super.getX() - this.speed);
-            //this.currentAnimation = walkBackAnimation;
+            this.currentAnimation = walkBackAnimation;
         }
         walkForwardAnimation.update(super.getX(), super.getY());
 
@@ -102,13 +101,16 @@ public class Player extends Entity
      */
     public void moveDown(int gravity)
     {
-        movingDown = true;
-        movingUp = false;
-        super.setY(super.getY() + gravity);
+        if ( canMoveDown == true )
+        {
+            movingDown = true;
+            movingUp = false;
+            super.setY(super.getY() + gravity);
+        }
     }
-    
+
     /**
-     * 
+     *
      */
     public void moveUp(int amount)
     {
@@ -116,7 +118,7 @@ public class Player extends Entity
     }
 
     /**
-     * 
+     *
      */
     public void jump(int gravity)
     {
@@ -124,9 +126,9 @@ public class Player extends Entity
         yVelocity += gravity;
         super.setY(super.getY() + yVelocity);
     }
-    
+
     /**
-     * 
+     *
      */
     public void stopJumping()
     {
@@ -153,21 +155,21 @@ public class Player extends Entity
     }
 
     /**
-     * 
+     *
      */
     public boolean isJumping()
     {
         return jumping;
     }
-    
+
     /**
-     * 
+     *
      */
-    public int getY_Velocity()
+    public int getSpeed()
     {
-        return yVelocity;
+        return this.speed;
     }
-    
+
     /**
      * Will multiply the original pixel width of the player by its scale to get the current real pixel width
      * @return Returns the actually width of the player
@@ -184,6 +186,26 @@ public class Player extends Entity
     public int getHeight()
     {
         return (int)(originalSpriteHeight * scale);
+    }
+
+    /**
+     *
+     * @param newX
+     */
+    public void setX(int newX)
+    {
+        super.setX(newX);
+        walkForwardAnimation.update(super.getX(), super.getY());
+    }
+
+    /**
+     *
+     * @param newY
+     */
+    public void setY(int newY)
+    {
+        super.setY(newY);
+        walkForwardAnimation.update(super.getX(), super.getY());
     }
 
     /**
@@ -235,140 +257,6 @@ public class Player extends Entity
         if ((this.getY() + this.getHeight() + gravity) > frameHeight)
         {
             return true;
-        }
-        return false;
-    }
-
-    /**
-     * Returns if the player is travelling right
-     * @return Returns if the player is going right
-     */
-    public boolean isMovingRight()
-    {
-        return movingRight;
-    }
-
-    /**
-     * Returns if the player is going left
-     * @return Returns if the player is going left
-     */
-    public boolean isMovingLeft()
-    {
-        return movingLeft;
-    }
-
-    /**
-     * Returns if the player is going up
-     * @return Returns if the player is going up
-     */
-    public boolean isMovingUp()
-    {
-        return movingUp;
-    }
-
-    /**
-     * Returns if the player is going down
-     * @return Returns if the player is going down
-     */
-    public boolean isMovingDown()
-    {
-        return movingDown;
-    }
-
-    /**
-     *Will look ahead and check to see if the player moves speed amount to the right will there be a collision
-     * <dt><b>precondition:</b><dd> otherEntity entity must be collidable
-     * @param otherEntity The entity that the player is checking for a collision with
-     * @return Will return if this player is colliding with the passed in entity on the right side
-     */
-    public boolean checkRightCollision(Entity otherEntity, int frameWidth)
-    {
-        int top1= this.getY();
-        int bottom1 = this.getY() + this.getHeight();
-        int right1 = this.getX() + this.getWidth();
-        int left1 = this.getX();
-
-        int top2 = otherEntity.getY();
-        int bottom2 = otherEntity.getY() + otherEntity.getHeight();
-        int right2 =otherEntity.getX() + otherEntity.getWidth();
-        int left2 = otherEntity.getX();
-
-        if ((left1 < right2 && (right1 + speed) > left2 && top1 < bottom2 && bottom1 > top2) || (right1 > frameWidth))
-        {
-            return true;
-        }
-        return false;
-
-    }
-
-    /**
-     * Will look ahead and check to see if the player moves speed amount to the left will there be a collision
-     * <dt><b>precondition:</b><dd> otherEntity entity must be collidable
-     * @return Returns if there is a collision or not
-     */
-    public boolean checkLeftCollision(Entity otherEntity)
-    {
-        int top1= this.getY();
-        int bottom1 = this.getY() + this.getHeight();
-        int right1 = this.getX() + this.getWidth();
-        int left1 = this.getX();
-
-        int top2 = otherEntity.getY();
-        int bottom2 = otherEntity.getY() + otherEntity.getHeight();
-        int right2 =otherEntity.getX() + otherEntity.getWidth();
-        int left2 = otherEntity.getX();
-
-        if (((left1 - speed) < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2) || (left1 < 0))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Will look ahead and check to see if the player moves speed amount up, will there be a collision
-     * <dt><b>precondition:</b><dd> otherEntity entity must be collidable
-     * @return Returns if there is a collision or not
-     */
-    public boolean checkTopCollision(Entity otherEntity, int currentJumpHeight)
-    {
-        int top1= this.getY();
-        int bottom1 = this.getY() + this.getHeight();
-        int right1 = this.getX() + this.getWidth();
-        int left1 = this.getX();
-
-        int top2 = otherEntity.getY();
-        int bottom2 = otherEntity.getY() + otherEntity.getHeight();
-        int right2 =otherEntity.getX() + otherEntity.getWidth();
-        int left2 = otherEntity.getX();
-
-        if ((left1 < right2 && right1 > left2 && (top1 - currentJumpHeight) < bottom2 && bottom1 > top2) || ((top1 - currentJumpHeight) < 0))
-        {
-            return  true;
-        }
-        return false;
-    }
-
-    /**
-     * Will look ahead and check to see if the player moves speed amount down, will there be a collision
-     * <dt><b>precondition:</b><dd> otherEntity entity must be collidable
-     * @return Returns if there is a collision or not
-     */
-    public boolean checkBottomCollision(Entity otherEntity, int frameHeight, int gravity)
-    {
-        int top1= this.getY();
-        int bottom1 = this.getY() + this.getHeight();
-        int right1 = this.getX() + this.getWidth();
-        int left1 = this.getX();
-
-        int top2 = otherEntity.getY();
-        int bottom2 = otherEntity.getY() + otherEntity.getHeight();
-        int right2 =otherEntity.getX() + otherEntity.getWidth();
-        int left2 = otherEntity.getX();
-
-        if ((left1 < right2 && right1 > left2 && top1 < bottom2 && (bottom1 + gravity) > top2) || (bottom1 > frameHeight))
-        {
-            return  true;
         }
         return false;
     }

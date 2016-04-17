@@ -51,7 +51,7 @@ public class EnemySpawner
             synchronized (entities)
             {
                 //Adds a new zombie and creates a handler for it
-                entities.add(new Zombie(500, 200, 5));
+                entities.add(new Zombie(500, 0, 5));
                 new Thread(new EnemyHandler((Enemy)entities.get(entities.size()-1),entities, 50, frame)).start();
             }
         }
