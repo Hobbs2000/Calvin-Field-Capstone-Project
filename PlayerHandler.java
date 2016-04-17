@@ -18,6 +18,11 @@ public class PlayerHandler implements Runnable
     private int sleep;
     private boolean running;
 
+    //This stuff is for jumping 
+    int yVelocity = -80;
+    int GRAVITY = 20;
+    boolean jumping = false;
+
     private Player thisPlayer;
     private Controls controls;
 
@@ -49,24 +54,37 @@ public class PlayerHandler implements Runnable
     {
         running = true;
 
+
         while(running)
         {
 
             //Get the key/s pressed
             controls.update();
 
-            boolean canMoveRight = true;
-            Entity rightCollidedEntity = null;
-            boolean canMoveLeft = true;
-            Entity leftCollideEntity = null;
-            boolean canMoveDown = true;
-            Entity bottomCollideEntity = null;
-            boolean canMoveUp = true;
-            Entity topCollideEntity = null;
-
+            if (controls.space)
+            {
+                jumping = true;
+            }
+            if (jumping)
+            {
+                if (yVelocity < 0)
+                {
+                    movePlayerUp(-1*yVelocity);
+                    yVelocity += GRAVITY;
+                }
+                else if (yVelocity >= 0)
+                {
+                    movePlayerDown(yVelocity);
+                    yVelocity += GRAVITY;
+                }
+            }
 
             //Move down because of gravity
-            movePlayerDown(40);
+            if (!jumping)
+            {
+                movePlayerDown(40);
+            }
+
 
             //Will actually move the player based on collisions and what keys were pressed
             if (controls.right)
@@ -189,6 +207,8 @@ public class PlayerHandler implements Runnable
 
         if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
         {
+            jumping = false;
+            yVelocity = -80;
             return;
         }
         else
