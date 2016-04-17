@@ -13,8 +13,8 @@ public class Player extends Entity
     private Animation walkForwardAnimation;
     private Animation walkBackAnimation;
     private Animation currentAnimation;
-    private int originalSpriteWidth = 32;
-    private int originalSpriteHeight = 36;
+    private int originalSpriteWidth = 16;
+    private int originalSpriteHeight = 32;
     private double scale;
 
     //These are the default values and may be changed
@@ -40,13 +40,13 @@ public class Player extends Entity
      */
     public Player(int startX, int startY, int scale)
     {
-        super(startX, startY, 32, 32);
+        super(startX, startY, 16, 32);
 
         this.scale = scale;
 
         try
         {
-            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
+            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 1.5);
             currentAnimation = walkForwardAnimation;
 
             //walkBackAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);

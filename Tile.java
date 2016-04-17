@@ -1,11 +1,16 @@
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * Created by Calvin on 4/16/2016.
  */
 public class Tile extends Entity
 {
+
+    private BufferedImage sprite;
 
     /**
      *
@@ -16,6 +21,16 @@ public class Tile extends Entity
     {
         //Each tile is 64 by 64 tiles big
         super(x, y, 64, 64);
+
+        try
+        {
+            sprite = ImageIO.read(getClass().getResource("/TileSheet1.png"));
+            sprite = sprite.getSubimage(0,0, 32, 32);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -24,8 +39,9 @@ public class Tile extends Entity
      */
     public void animate(Graphics g)
     {
-        g.setColor(Color.WHITE);
-        g.fillRect(getX(), getY(), getWidth(), getHeight());
+        //g.setColor(Color.WHITE);
+        //g.fillRect(getX(), getY(), getWidth(), getHeight());
+        g.drawImage(sprite, getX(), getY(), getWidth(), getHeight(), null);
     }
 
     /**
