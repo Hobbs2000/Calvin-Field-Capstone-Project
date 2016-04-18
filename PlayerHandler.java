@@ -1,4 +1,5 @@
 
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,8 +20,8 @@ public class PlayerHandler implements Runnable
     private boolean running;
 
     //This stuff is for jumping 
-    int yVelocity = -80;
-    int GRAVITY = 20;
+    int yVelocity = -30;
+    int GRAVITY = 4;
     boolean jumping = false;
 
     private Player thisPlayer;
@@ -75,7 +76,6 @@ public class PlayerHandler implements Runnable
                 else if (yVelocity >= 0)
                 {
                     movePlayerDown(yVelocity);
-                    
                     //If the player is moving faster than the size of a tile, it would clip through the tile
                     if (yVelocity >= 63)
                     {
@@ -91,7 +91,7 @@ public class PlayerHandler implements Runnable
             //Move down because of gravity
             if (!jumping)
             {
-                movePlayerDown(40);
+                movePlayerDown(20);
             }
 
 
@@ -217,7 +217,7 @@ public class PlayerHandler implements Runnable
         if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
         {
             jumping = false;
-            yVelocity = -80;
+            yVelocity = -40;
             return;
         }
         else

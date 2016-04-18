@@ -15,7 +15,7 @@ public class AnimationTester extends Canvas implements Runnable
     private boolean running = false;
     private ArrayList<Entity> entities = new ArrayList<Entity>();
     private Level level = new Level();
-    private final int WAIT = 50; //All thread sleeps need to be the same time to prevent visible stuttering
+    private final int WAIT = 10; //All thread sleeps need to be the same time to prevent visible stuttering
 
     public AnimationTester()
     {
@@ -63,7 +63,7 @@ public class AnimationTester extends Canvas implements Runnable
 
 
         EnemySpawner spawner = new EnemySpawner(entities, level);
-        spawner.startZombieSpawner(frame);
+        //spawner.startZombieSpawner(frame);
 
         Thread mainThread = new Thread(this);
         mainThread.start();
@@ -86,6 +86,7 @@ public class AnimationTester extends Canvas implements Runnable
             {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -109,7 +110,7 @@ public class AnimationTester extends Canvas implements Runnable
         Graphics g = bs.getDrawGraphics();
 
         //Set background to black
-        g.setColor(Color.BLACK);
+        g.setColor(Color.white);
         g.fillRect(0,0, frame.getWidth(), frame.getHeight());
 
 

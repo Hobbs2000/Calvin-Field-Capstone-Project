@@ -1,4 +1,5 @@
 
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
@@ -13,14 +14,15 @@ public class Player extends Entity
     private Animation walkForwardAnimation;
     private Animation walkBackAnimation;
     private Animation currentAnimation;
-    private int originalSpriteWidth = 16;
-    private int originalSpriteHeight = 32;
+    //Make the actual size 2 pixel smaller before scaling
+    private int originalSpriteWidth = 14;
+    private int originalSpriteHeight = 30;
     private double scale;
 
     //These are the default values and may be changed
     private int damage = 10;
     private int health = 100;
-    private int speed = 20;
+    private int speed = 8;
 
     private boolean movingUp = false;
     private boolean canMoveDown = true;
@@ -46,7 +48,7 @@ public class Player extends Entity
 
         try
         {
-            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 1.5);
+            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 10);
             currentAnimation = walkForwardAnimation;
 
             //walkBackAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
@@ -67,6 +69,76 @@ public class Player extends Entity
     }
 
     /**
+     * Moves the player's x coordinate speed amount
+     * @param direction True means right and false means left
+     */
+    public void moveHorizontal(boolean direction)
+    {
+        if (direction == true)
+        {
+            movingRight = true;
+            movingRight = false;
+            this.setX(super.getX() + this.speed);
+            this.currentAnimation = walkForwardAnimation;
+        }
+        else
+        {
+            movingLeft = true;
+            movingRight = false;
+            this.setX(super.getX() - this.speed);
+            this.currentAnimation = walkBackAnimation;
+        }
+        walkForwardAnimation.update(super.getX(), super.getY());
+
+        if (currentAnimation != walkForwardAnimation)
+        {
+            currentAnimation = walkForwardAnimation;
+        }
+    }
+
+    //Will nearly always be called since there is gravity
+    /**
+     *  Moves the player down by gravity amount
+     *  @param gravity Will be the amount that the player is moved down by
+     */
+    public void moveDown(int gravity)
+    {
+        if ( canMoveDown == true )
+        {
+            movingDown = true;
+            movingUp = false;
+            super.setY(super.getY() + gravity);
+        }
+    }
+
+    /**
+     *
+     */
+    public void moveUp(int amount)
+    {
+        super.setY(super.getY() - amount);
+    }
+
+    /**
+     *
+     */
+    public void jump(int gravity)
+    {
+        jumping = true;
+        yVelocity += gravity;
+        super.setY(super.getY() + yVelocity);
+    }
+
+    /**
+     *
+     */
+    public void stopJumping()
+    {
+        jumping = false;
+        yVelocity = -90;
+    }
+
+    /**
      * Will call the draw method for the currentAnimation for the player
      * @param g The graphics component
      */
@@ -82,6 +154,14 @@ public class Player extends Entity
     public boolean hasAnimation()
     {
         return true;
+    }
+
+    /**
+     *
+     */
+    public boolean isJumping()
+    {
+        return jumping;
     }
 
     /**
