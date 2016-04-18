@@ -67,76 +67,6 @@ public class Player extends Entity
     }
 
     /**
-     * Moves the player's x coordinate speed amount
-     * @param direction True means right and false means left
-     */
-    public void moveHorizontal(boolean direction)
-    {
-        if (direction == true)
-        {
-            movingRight = true;
-            movingRight = false;
-            this.setX(super.getX() + this.speed);
-            this.currentAnimation = walkForwardAnimation;
-        }
-        else
-        {
-            movingLeft = true;
-            movingRight = false;
-            this.setX(super.getX() - this.speed);
-            this.currentAnimation = walkBackAnimation;
-        }
-        walkForwardAnimation.update(super.getX(), super.getY());
-
-        if (currentAnimation != walkForwardAnimation)
-        {
-            currentAnimation = walkForwardAnimation;
-        }
-    }
-
-    //Will nearly always be called since there is gravity
-    /**
-     *  Moves the player down by gravity amount
-     *  @param gravity Will be the amount that the player is moved down by
-     */
-    public void moveDown(int gravity)
-    {
-        if ( canMoveDown == true )
-        {
-            movingDown = true;
-            movingUp = false;
-            super.setY(super.getY() + gravity);
-        }
-    }
-
-    /**
-     *
-     */
-    public void moveUp(int amount)
-    {
-        super.setY(super.getY() - amount);
-    }
-
-    /**
-     *
-     */
-    public void jump(int gravity)
-    {
-        jumping = true;
-        yVelocity += gravity;
-        super.setY(super.getY() + yVelocity);
-    }
-
-    /**
-     *
-     */
-    public void stopJumping()
-    {
-        jumping = false;
-        yVelocity = -90;
-    }
-
-    /**
      * Will call the draw method for the currentAnimation for the player
      * @param g The graphics component
      */
@@ -152,14 +82,6 @@ public class Player extends Entity
     public boolean hasAnimation()
     {
         return true;
-    }
-
-    /**
-     *
-     */
-    public boolean isJumping()
-    {
-        return jumping;
     }
 
     /**

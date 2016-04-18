@@ -19,5 +19,5 @@ comment5.target=void\ movePlayerUp(int)
 comment5.text=\r\n\r\n\ @param\ dy\r\n
 comment6.params=
 comment6.target=void\ stop()
-comment6.text=\r\n\r\n
+comment6.text=\r\n\ Stops\ the\ run\ loop\ which\ ends\ the\ thread\r\n
 numComments=7

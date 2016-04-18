@@ -1,9 +1,21 @@
 #BlueJ class context
-comment0.params=handledEnemy\ allEntities\ sleep\ currentFrame
-comment0.target=EnemyHandler(Enemy,\ java.util.ArrayList,\ int,\ javax.swing.JFrame)
+comment0.params=handledEnemy\ allEntities\ sleep\ currentFrame\ level
+comment0.target=EnemyHandler(Enemy,\ java.util.ArrayList,\ int,\ javax.swing.JFrame,\ Level)
 comment0.text=\r\n\r\n
 comment1.params=
 comment1.target=void\ run()
-comment2.params=
-comment2.target=void\ stopAll()
-numComments=3
+comment2.params=dx
+comment2.target=void\ moveEnemyRight(int)
+comment2.text=\r\n\r\n\ @param\ dx\r\n
+comment3.params=dx
+comment3.target=void\ moveEnemyLeft(int)
+comment3.text=\r\n\r\n\ @param\ dx\r\n
+comment4.params=dy
+comment4.target=void\ moveEnemyDown(int)
+comment4.text=\r\n\r\n\ @param\ dy\r\n
+comment5.params=dy
+comment5.target=void\ moveEnemyUp(int)
+comment5.text=\r\n\r\n\ @param\ dy\r\n
+comment6.params=
+comment6.target=void\ stopAll()
+numComments=7

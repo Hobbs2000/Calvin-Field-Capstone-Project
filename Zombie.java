@@ -42,33 +42,24 @@ public class Zombie extends Enemy
             e.printStackTrace();
         }
     }
-
+    
     /**
-     * Moves the Zombies x coordinate speed amount
-     * @param direction True means right and false means left
+     * 
      */
-    public void moveHorizontal(boolean direction)
+    public void setX(int newX)
     {
-        if (direction == true)
-        {
-            super.setMovingRight(true);
-            super.setMovingLeft(false);
-            super.setX(super.getX() + super.getSpeed());
-        }
-        else
-        {
-            super.setMovingLeft(true);
-            super.setMovingRight(false);
-            super.setX(super.getX() - super.getSpeed());
-        }
-        walkAnimation.update(super.getX(), super.getY());
-
-        if (currentAnimation != walkAnimation)
-        {
-            currentAnimation = walkAnimation;
-        }
+        super.setX(newX);
+        currentAnimation.update(newX, this.getY());
     }
-
+    
+    /**
+     * 
+     */
+    public void setY(int newY)
+    {
+        super.setY(newY);
+        currentAnimation.update(this.getX(), newY);
+    }
 
     /**
      * Calls the draw method of all the animations for this enemy

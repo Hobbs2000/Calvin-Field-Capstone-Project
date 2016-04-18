@@ -75,7 +75,16 @@ public class PlayerHandler implements Runnable
                 else if (yVelocity >= 0)
                 {
                     movePlayerDown(yVelocity);
-                    yVelocity += GRAVITY;
+                    
+                    //If the player is moving faster than the size of a tile, it would clip through the tile
+                    if (yVelocity >= 63)
+                    {
+                        yVelocity = 63;
+                    }
+                    else
+                    {
+                        yVelocity += GRAVITY;
+                    }
                 }
             }
 
@@ -229,19 +238,19 @@ public class PlayerHandler implements Runnable
         int tcLeftX = this.thisPlayer.getX();
 
         //Bottom corner right y
-        int bcRightY = tcLeftY;
+        int tcRightY = tcLeftY;
         //Bottom corner right x
-        int bcRightX = this.thisPlayer.getX() + this.thisPlayer.getHeight();
+        int tcRightX = this.thisPlayer.getX() + this.thisPlayer.getWidth();
 
         //Testing the middle point is only neccesary if the player is wider than a standard tile
         //Bottom middle y
-        int bMiddleY = tcLeftY;
+        int tMiddleY = tcLeftY;
         //Bottom middle x
-        int bMiddleX = this.thisPlayer.getX() + (this.thisPlayer.getWidth() / 2);
+        int tMiddleX = this.thisPlayer.getX() + (this.thisPlayer.getWidth() / 2);
 
         Tile tile1 = currentLevel.getTile(tcLeftX, tcLeftY - dy);
-        Tile tile2 = currentLevel.getTile(bcRightX, bcRightY - dy);
-        Tile tile3 = currentLevel.getTile(bMiddleX, bMiddleY - dy);
+        Tile tile2 = currentLevel.getTile(tcRightX, tcRightY - dy);
+        Tile tile3 = currentLevel.getTile(tMiddleX, tMiddleY - dy);
         if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
         {
             return;
@@ -253,13 +262,11 @@ public class PlayerHandler implements Runnable
     }
 
     /**
-     *
+     * Stops the run loop which ends the thread
      */
     public void stop()
     {
         running = false;
     }
-
-
 
 }

@@ -13,14 +13,16 @@ public class EnemySpawner
     private int sleep;
 
     private boolean zombieSpawing = false;
-
+    
+    Level currentLevel;
+    
     private JFrame frame;
 
     /**
      *
      * @param startEntities
      */
-    public EnemySpawner(ArrayList<Entity> startEntities)
+    public EnemySpawner(ArrayList<Entity> startEntities, Level level)
     {
         this.entities = startEntities;
     }
@@ -51,8 +53,8 @@ public class EnemySpawner
             synchronized (entities)
             {
                 //Adds a new zombie and creates a handler for it
-                entities.add(new Zombie(500, 0, 5));
-                new Thread(new EnemyHandler((Enemy)entities.get(entities.size()-1),entities, 50, frame)).start();
+                entities.add(new Zombie(230, 90, 5));
+                new Thread(new EnemyHandler((Enemy)entities.get(entities.size()-1),entities, 50, frame, currentLevel)).start();
             }
         }
     }

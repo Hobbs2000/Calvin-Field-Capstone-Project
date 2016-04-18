@@ -16,6 +16,8 @@ public class EnemyHandler implements Runnable
 
     public boolean moverRunning = false;
 
+    private Level currentLevel;
+    
     private Enemy thisEnemy;
 
     public int frameWidth, frameHeight;
@@ -23,7 +25,7 @@ public class EnemyHandler implements Runnable
     /**
      *
      */
-    public EnemyHandler(Enemy handledEnemy, ArrayList<Entity> allEntities, int sleep, JFrame currentFrame)
+    public EnemyHandler(Enemy handledEnemy, ArrayList<Entity> allEntities, int sleep, JFrame currentFrame, Level level)
     {
         //this.enemyList = enemies;
         this.entities = allEntities;
@@ -31,6 +33,7 @@ public class EnemyHandler implements Runnable
         this.sleep = sleep;
         this.frameWidth = currentFrame.getWidth();
         this.frameHeight = currentFrame.getHeight();
+        this.currentLevel = level;
     }
 
     //Will deal with enemies movements on a different thread
@@ -40,103 +43,22 @@ public class EnemyHandler implements Runnable
 
         while(moverRunning)
         {
-            boolean canMoveRight = true;
-            Entity rightCollideEntity = null;
-            boolean canMoveLeft = true;
-            Entity leftCollideEntity = null;
-            boolean canMoveDown = true;
-            Entity bottomCollideEntity = null;
-            boolean canMoveUp = true;
-            Entity topCollideEntity = null;
-
+           
             //Gets a random number that will determine which direction the enemy goes
             int moveHorizontal = (int)(Math.random() * 200);
 
-             for (int i = 0; i < entities.size(); i++)
-             {
-                 if ((entities.get(i) != this.thisEnemy) && !(entities.get(i) instanceof Enemy) && entities.get(i).isCollidable())
-                 {
-                     int top1= this.thisEnemy.getY();
-                     int bottom1 = this.thisEnemy.getY() + this.thisEnemy.getHeight();
-                     int right1 = this.thisEnemy.getX() + this.thisEnemy.getWidth();
-                     int left1 = this.thisEnemy.getX();
-
-                     int top2 = entities.get(i).getY();
-                     int bottom2 = entities.get(i).getY() + entities.get(i).getHeight();
-                     int right2 =entities.get(i).getX() + entities.get(i).getWidth();
-                     int left2 = entities.get(i).getX();
-
-
-                     //If the random value is less than 100, move the enemy right
-                     if (moveHorizontal < 100)
-                     {
-                         canMoveLeft = false;
-
-                         //If the enemy is colliding with any entity it cannot move right
-                         if ((canMoveRight) && this.thisEnemy.checkRightCollision(entities.get(i), frameWidth))
-                         {
-                             canMoveRight = false;
-                             rightCollideEntity = entities.get(i);
-                         }
-                     }
-                     //If the random value is greater than 100, move the enemy left
-                     else if (moveHorizontal > 100)
-                     {
-                         canMoveRight = false;
-
-                         //If the enemy is colliding with any entity it cannot move left
-                         if ((canMoveLeft) && this.thisEnemy.checkLeftCollision(entities.get(i)))
-                         {
-                             canMoveLeft = false;
-                             leftCollideEntity = entities.get(i);
-                         }
-                     }
-                     
-
-                     //Checks for collision with any entity before moving the enemy down
-                     if ((canMoveDown) && this.thisEnemy.checkBottomCollision(entities.get(i), frameHeight, 20))
-                     {
-                         canMoveDown = false;
-                         bottomCollideEntity = entities.get(i);
-                     }
-                     
-                     if ((canMoveUp) && this.thisEnemy.checkTopCollision(entities.get(i)))
-                     {
-                         canMoveUp = false;
-                         topCollideEntity = entities.get(i);
-                     }
-                 }
-             }
-
-
-
-            if (canMoveRight)
+            if (moveHorizontal < 100)
             {
-                this.thisEnemy.moveHorizontal(true);
+       
+                moveEnemyRight(10);
             }
-            if (canMoveLeft)
+            else if (moveHorizontal > 100)
             {
-                this.thisEnemy.moveHorizontal(false);
+                moveEnemyLeft(10);
             }
             
-            if (canMoveDown)
-            {
-                this.thisEnemy.moveDown(20);
-            }
-   
-            //These next two if statements help (but doesn't always) prevent a bug where when the corner of both entities meet causing both entities to become permanently stuck
-            //This problem occurs when one moving entity is on top of another, then when the top one falls off it immediately tries to go into the lower entity causing both entities to become stuck
-            if ((rightCollideEntity != null) && ((topCollideEntity == rightCollideEntity) || (bottomCollideEntity == leftCollideEntity)) && moveHorizontal < 100)
-            {
-                this.thisEnemy.moveHorizontal(false);
-            }
-            else if ((leftCollideEntity != null) && ((topCollideEntity == leftCollideEntity) || (bottomCollideEntity == leftCollideEntity)) && moveHorizontal > 100)
-            {
-                this.thisEnemy.moveHorizontal(true);
-            }
+            moveEnemyDown(20);
             
-
-
             try
             {
                 Thread.sleep(this.sleep);
@@ -145,6 +67,147 @@ public class EnemyHandler implements Runnable
             {
                 e.printStackTrace();
             }
+        }
+    }
+    
+    /**
+     *
+     * @param dx
+     */
+    public void moveEnemyRight(int dx)
+    {
+        //Top corner right y
+        int tcRightY = this.thisEnemy.getY();
+        //Top corner right x
+        int tcRightX = this.thisEnemy.getX() + this.thisEnemy.getWidth();
+
+        //Bottom corner right y
+        int bcRightY = this.thisEnemy.getY() + this.thisEnemy.getHeight();
+        //Bottom corner right x
+        int bcRightX = tcRightX;
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int rMiddleY = this.thisEnemy.getY() + (this.thisEnemy.getHeight() / 2);
+        //Bottom middle x
+        int rMiddleX = tcRightX;
+ 
+        Tile tile1 = currentLevel.getTile(tcRightX + dx, tcRightY);
+        Tile tile2 = currentLevel.getTile(bcRightX + dx, bcRightY);
+        Tile tile3 = currentLevel.getTile(rMiddleX + dx, rMiddleY);
+
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisEnemy.setX(this.thisEnemy.getX() + dx);
+        }
+    }
+
+    /**
+     *
+     * @param dx
+     */
+    public void moveEnemyLeft(int dx)
+    {
+        //Top left corner left y
+        int tcLeftY = this.thisEnemy.getY();
+        //Top corner right x
+        int tcLeftX = this.thisEnemy.getX();
+
+        //Bottom left corner right y
+        int bcLeftY = this.thisEnemy.getY() + this.thisEnemy.getHeight();
+        //Bottom corner right x
+        int bcLeftX = this.thisEnemy.getX();
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int lMiddleY = this.thisEnemy.getY() + (this.thisEnemy.getHeight() / 2);
+        //Bottom middle x
+        int lMiddleX = this.thisEnemy.getX();
+
+        Tile tile1 = currentLevel.getTile(tcLeftX - dx, tcLeftY);
+        Tile tile2 = currentLevel.getTile(bcLeftX - dx, bcLeftY);
+        Tile tile3 = currentLevel.getTile(lMiddleX - dx, lMiddleY);
+
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisEnemy.setX(this.thisEnemy.getX() - dx);
+        }
+    }
+
+    /**
+     *
+     * @param dy
+     */
+    public void moveEnemyDown(int dy)
+    {
+        //Bottom corner left y
+        int bcLeftY = this.thisEnemy.getY() + this.thisEnemy.getHeight();
+
+        //Bottom corner right y
+        int bcRightY = bcLeftY;
+        //Bottom corner right x
+        int bcRightX = this.thisEnemy.getX() + this.thisEnemy.getWidth();
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int bMiddleY = bcLeftY;
+        //Bottom middle x
+        int bMiddleX = this.thisEnemy.getX() + (this.thisEnemy.getWidth() / 2);
+
+        Tile tile1 = currentLevel.getTile(this.thisEnemy.getX(), bcLeftY + dy);
+        Tile tile2 = currentLevel.getTile(bcRightX, bcRightY + dy);
+        Tile tile3 = currentLevel.getTile(bMiddleX, bMiddleY + dy);
+
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisEnemy.setY(this.thisEnemy.getY() + dy);
+        }
+    }
+
+    /**
+     *
+     * @param dy
+     */
+    public void moveEnemyUp(int dy)
+    {
+        //Top corner left y
+        int tcLeftY = this.thisEnemy.getY();
+        //Top corner left x
+        int tcLeftX = this.thisEnemy.getX();
+
+        //Bottom corner right y
+        int bcRightY = tcLeftY;
+        //Bottom corner right x
+        int bcRightX = this.thisEnemy.getX() + this.thisEnemy.getHeight();
+
+        //Testing the middle point is only neccesary if the player is wider than a standard tile
+        //Bottom middle y
+        int bMiddleY = tcLeftY;
+        //Bottom middle x
+        int bMiddleX = this.thisEnemy.getX() + (this.thisEnemy.getWidth() / 2);
+
+        Tile tile1 = currentLevel.getTile(tcLeftX, tcLeftY - dy);
+        Tile tile2 = currentLevel.getTile(bcRightX, bcRightY - dy);
+        Tile tile3 = currentLevel.getTile(bMiddleX, bMiddleY - dy);
+        if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
+        {
+            return;
+        }
+        else
+        {
+            this.thisEnemy.setY(this.thisEnemy.getY() - dy);
         }
     }
 

@@ -19,7 +19,7 @@ public class AnimationTester extends Canvas implements Runnable
 
     public AnimationTester()
     {
-        Dimension size = new Dimension(640, 640);
+        Dimension size = new Dimension(1216, 1024);
         //setPreferredSize is in the canvas class
         setPreferredSize(size);
         frame = new JFrame();
@@ -48,9 +48,9 @@ public class AnimationTester extends Canvas implements Runnable
     //Starts all processes for the game to begin
     public synchronized void start()
     {
-        entities.add(new Player(240, 100, 4));
+        entities.add(new Player(240, 400, 4));
 
-        //entities.add(new Zombie(0, 200, 5));
+        entities.add(new Zombie(200, 400, 5));
         //entities.add(new Zombie(250, 200, 5));
 
 
@@ -59,12 +59,11 @@ public class AnimationTester extends Canvas implements Runnable
         super.addKeyListener(controls);
         new Thread(new PlayerHandler((Player)entities.get(0), entities, WAIT, frame, controls, level)).start();
 
-        //new Thread(new EnemyHandler((Enemy)entities.get(1),entities, WAIT, frame)).start();
-        //new Thread(new EnemyHandler((Enemy)entities.get(2),entities, WAIT, frame)).start();
+        new Thread(new EnemyHandler((Enemy)entities.get(1),entities, WAIT, frame, level)).start();
 
 
-        //EnemySpawner spawner = new EnemySpawner(entities);
-        //spawner.startZombieSpawner(frame);
+        EnemySpawner spawner = new EnemySpawner(entities, level);
+        spawner.startZombieSpawner(frame);
 
         Thread mainThread = new Thread(this);
         mainThread.start();

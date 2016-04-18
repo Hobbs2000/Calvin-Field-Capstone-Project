@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=startEntities
-comment0.target=EnemySpawner(java.util.ArrayList)
+comment0.params=startEntities\ level
+comment0.target=EnemySpawner(java.util.ArrayList,\ Level)
 comment0.text=\r\n\r\n\ @param\ startEntities\r\n
 comment1.params=frame
 comment1.target=void\ startZombieSpawner(javax.swing.JFrame)
