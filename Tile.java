@@ -32,6 +32,15 @@ public class Tile extends Entity
             e.printStackTrace();
         }
     }
+    
+    /**
+     *
+     * @param newSprite
+     */
+    public void setSprite(BufferedImage newSprite)
+    {
+        sprite = newSprite;
+    }
 
     /**
      *
