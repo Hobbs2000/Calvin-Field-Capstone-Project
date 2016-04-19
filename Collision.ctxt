@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.params=entity1\ entity2
+comment0.target=boolean\ collided(Entity,\ Entity)
+comment0.text=\r\n\ Checks\ to\ see\ if\ entity1\ is\ overlapping\ with\ entity2\ \r\n\ Not\ to\ be\ used\ for\ collision\ with\ tiles\ and\ solid\ objects\r\n\ @param\ entity1\ The\ current\ entity\r\n\ @param\ entity2\ The\ entity\ that\ entity1\ is\ checking\ for\ a\ collision\ with\r\n\ @return\ Returns\ if\ there\ is\ a\ collision\ or\ not\r\n
+numComments=1
