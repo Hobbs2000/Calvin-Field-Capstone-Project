@@ -77,9 +77,9 @@ public class PlayerHandler implements Runnable
                 {
                     movePlayerDown(yVelocity);
                     //If the player is moving faster than the size of a tile, it would clip through the tile
-                    if (yVelocity >= 63)
+                    if (yVelocity >= 32)
                     {
-                        yVelocity = 63;
+                        yVelocity = 32;
                     }
                     else
                     {

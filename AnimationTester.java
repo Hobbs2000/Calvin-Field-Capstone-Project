@@ -48,7 +48,7 @@ public class AnimationTester extends Canvas implements Runnable
     //Starts all processes for the game to begin
     public synchronized void start()
     {
-        entities.add(new Player(240, 400, 4));
+        entities.add(new Player(240, 300, 3));
 
         entities.add(new Zombie(200, 400, 5));
         //entities.add(new Zombie(250, 200, 5));

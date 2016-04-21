@@ -20,7 +20,7 @@ public class Tile extends Entity
     public Tile(int x, int y)
     {
         //Each tile is 64 by 64 tiles big
-        super(x, y, 64, 64);
+        super(x, y, 32, 32);
 
         try
         {
