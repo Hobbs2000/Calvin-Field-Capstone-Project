@@ -1,5 +1,4 @@
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -111,16 +110,19 @@ public class AnimationTester extends Canvas implements Runnable
 
         //Set background to black
         g.setColor(Color.white);
-        g.fillRect(0,0, frame.getWidth(), frame.getHeight());
+        g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 
 
         for (Entity entity : entities)
         {
-            if (entity.hasAnimation() == true)
+            if (entity.hasAnimation() == true && !(entity instanceof Player))
             {
                 entity.animate(g);
             }
         }
+
+        //Player is drawn on top most layer
+        entities.get(0).animate(g);
 
         level.drawWorld(g);
 

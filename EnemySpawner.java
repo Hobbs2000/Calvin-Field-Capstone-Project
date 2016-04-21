@@ -13,9 +13,9 @@ public class EnemySpawner
     private int sleep;
 
     private boolean zombieSpawing = false;
-    
+
     Level currentLevel;
-    
+
     private JFrame frame;
 
     /**

@@ -20,9 +20,9 @@ public class Player extends Entity
     private double scale;
 
     //These are the default values and may be changed
-    private int damage = 10;
-    private int health = 100;
-    private int speed = 8;
+    public int damage = 10;
+    public int health = 100;
+    private int speed = 5;
 
     private boolean movingUp = false;
     private boolean canMoveDown = true;
@@ -40,7 +40,7 @@ public class Player extends Entity
      * @param startY
      * @param scale
      */
-    public Player(int startX, int startY, int scale)
+    public Player(int startX, int startY, double scale)
     {
         super(startX, startY, 16, 32);
 
@@ -96,6 +96,48 @@ public class Player extends Entity
         }
     }
 
+    //Will nearly always be called since there is gravity
+    /**
+     *  Moves the player down by gravity amount
+     *  @param gravity Will be the amount that the player is moved down by
+     */
+    public void moveDown(int gravity)
+    {
+        if ( canMoveDown == true )
+        {
+            movingDown = true;
+            movingUp = false;
+            super.setY(super.getY() + gravity);
+        }
+    }
+
+    /**
+     *
+     */
+    public void moveUp(int amount)
+    {
+        super.setY(super.getY() - amount);
+    }
+
+    /**
+     *
+     */
+    public void jump(int gravity)
+    {
+        jumping = true;
+        yVelocity += gravity;
+        super.setY(super.getY() + yVelocity);
+    }
+
+    /**
+     *
+     */
+    public void stopJumping()
+    {
+        jumping = false;
+        yVelocity = -90;
+    }
+
     /**
      * Will call the draw method for the currentAnimation for the player
      * @param g The graphics component
@@ -112,6 +154,14 @@ public class Player extends Entity
     public boolean hasAnimation()
     {
         return true;
+    }
+
+    /**
+     *
+     */
+    public boolean isJumping()
+    {
+        return jumping;
     }
 
     /**

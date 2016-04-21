@@ -1,8 +1,6 @@
 
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 /**
@@ -20,9 +18,12 @@ public class PlayerHandler implements Runnable
     private boolean running;
 
     //This stuff is for jumping 
-    int yVelocity = -30;
-    int GRAVITY = 4;
+    int yVelocity = -20;
+    int maxY_Velocity = -20;
+    int GRAVITY = 2;
     boolean jumping = false;
+
+    int invulnerableTime = 50;
 
     private Player thisPlayer;
     private Controls controls;
@@ -62,6 +63,20 @@ public class PlayerHandler implements Runnable
             //Get the key/s pressed
             controls.update();
 
+            //Go through all entities and check for collisions
+            for (int i = 0; i < entities.size(); i++)
+            {
+                boolean hasCollided = Collision.collided(this.thisPlayer, entities.get(i));
+                //Check to see if the entity is an enemy and the player invulnerability time is up
+                if (entities.get(i) instanceof Enemy && hasCollided && invulnerableTime <= 0)
+                {
+                    Enemy enemy = (Enemy)entities.get(i);
+                    this.thisPlayer.health -= enemy.getDamage();
+                    invulnerableTime = 50;
+                }
+            }
+            invulnerableTime--;
+
             if (controls.space)
             {
                 jumping = true;
@@ -77,9 +92,9 @@ public class PlayerHandler implements Runnable
                 {
                     movePlayerDown(yVelocity);
                     //If the player is moving faster than the size of a tile, it would clip through the tile
-                    if (yVelocity >= 32)
+                    if (yVelocity >= 31)
                     {
-                        yVelocity = 32;
+                        yVelocity = 31;
                     }
                     else
                     {
@@ -91,7 +106,7 @@ public class PlayerHandler implements Runnable
             //Move down because of gravity
             if (!jumping)
             {
-                movePlayerDown(20);
+                movePlayerDown(10);
             }
 
 
@@ -217,7 +232,7 @@ public class PlayerHandler implements Runnable
         if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
         {
             jumping = false;
-            yVelocity = -40;
+            yVelocity = maxY_Velocity;
             return;
         }
         else

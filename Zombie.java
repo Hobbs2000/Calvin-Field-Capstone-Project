@@ -19,7 +19,7 @@ public class Zombie extends Enemy
     private boolean jumping = false;
 
     /**
-     * 
+     *
      */
     public Zombie(int spawnX, int spawnY, double scale)
     {
@@ -42,18 +42,18 @@ public class Zombie extends Enemy
             e.printStackTrace();
         }
     }
-    
+
     /**
-     * 
+     *
      */
     public void setX(int newX)
     {
         super.setX(newX);
         currentAnimation.update(newX, this.getY());
     }
-    
+
     /**
-     * 
+     *
      */
     public void setY(int newY)
     {
@@ -71,7 +71,7 @@ public class Zombie extends Enemy
     }
 
     /**
-     * 
+     *
      */
     public boolean hasAnimation()
     {
@@ -79,7 +79,7 @@ public class Zombie extends Enemy
     }
 
     /**
-     * 
+     *
      */
     public int getWidth()
     {
@@ -87,7 +87,7 @@ public class Zombie extends Enemy
     }
 
     /**
-     * 
+     *
      */
     public int getHeight()
     {
