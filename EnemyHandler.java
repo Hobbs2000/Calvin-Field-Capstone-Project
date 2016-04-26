@@ -17,7 +17,7 @@ public class EnemyHandler implements Runnable
     public boolean moverRunning = false;
 
     private Level currentLevel;
-    
+
     private Enemy thisEnemy;
 
     public int frameWidth, frameHeight;
@@ -43,22 +43,21 @@ public class EnemyHandler implements Runnable
 
         while(moverRunning)
         {
-           
             //Gets a random number that will determine which direction the enemy goes
             int moveHorizontal = (int)(Math.random() * 200);
 
             if (moveHorizontal < 100)
             {
-       
+
                 moveEnemyRight(10);
             }
             else if (moveHorizontal > 100)
             {
                 moveEnemyLeft(10);
             }
-            
+
             moveEnemyDown(20);
-            
+
             try
             {
                 Thread.sleep(this.sleep);
@@ -69,7 +68,7 @@ public class EnemyHandler implements Runnable
             }
         }
     }
-    
+
     /**
      *
      * @param dx
@@ -91,7 +90,7 @@ public class EnemyHandler implements Runnable
         int rMiddleY = this.thisEnemy.getY() + (this.thisEnemy.getHeight() / 2);
         //Bottom middle x
         int rMiddleX = tcRightX;
- 
+
         Tile tile1 = currentLevel.getTile(tcRightX + dx, tcRightY);
         Tile tile2 = currentLevel.getTile(bcRightX + dx, bcRightY);
         Tile tile3 = currentLevel.getTile(rMiddleX + dx, rMiddleY);

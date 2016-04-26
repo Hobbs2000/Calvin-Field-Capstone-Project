@@ -24,6 +24,7 @@ public class EnemySpawner
      */
     public EnemySpawner(ArrayList<Entity> startEntities, Level level)
     {
+        currentLevel = level;
         this.entities = startEntities;
     }
 
@@ -53,7 +54,7 @@ public class EnemySpawner
             synchronized (entities)
             {
                 //Adds a new zombie and creates a handler for it
-                entities.add(new Zombie(230, 90, 5));
+                entities.add(new Zombie(230, 90, 3));
                 new Thread(new EnemyHandler((Enemy)entities.get(entities.size()-1),entities, 50, frame, currentLevel)).start();
             }
         }

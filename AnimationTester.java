@@ -28,7 +28,7 @@ public class AnimationTester extends Canvas implements Runnable
     {
         AnimationTester tester = new AnimationTester();
         tester.frame.setResizable(false);
-        tester.frame.setTitle("Tester");
+        tester.frame.setTitle("Game");
         tester.frame.add(tester);
         tester.frame.pack();
 
@@ -49,7 +49,7 @@ public class AnimationTester extends Canvas implements Runnable
     {
         entities.add(new Player(240, 300, 3));
 
-        entities.add(new Zombie(200, 400, 5));
+        entities.add(new Zombie(200, 400, 3));
         //entities.add(new Zombie(250, 200, 5));
 
 
@@ -62,7 +62,7 @@ public class AnimationTester extends Canvas implements Runnable
 
 
         EnemySpawner spawner = new EnemySpawner(entities, level);
-        //spawner.startZombieSpawner(frame);
+        spawner.startZombieSpawner(frame);
 
         Thread mainThread = new Thread(this);
         mainThread.start();
