@@ -60,16 +60,19 @@ public class Renderer implements Runnable
         g.setColor(Color.white);
         g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 
-
-        for (Entity entity : entities)
+        //Synchronized to avoid a concurrent modification error
+        synchronized (entities)
         {
-            if (entity.hasAnimation() == true && !(entity instanceof Player))
+            for (Entity entity : entities)
             {
-                entity.animate(g);
+                if (entity.hasAnimation() == true && !(entity instanceof Player))
+                {
+                    entity.animate(g);
+                }
             }
         }
 
-        //Player is drawn on top most layer
+        //Player is drawn on the top most layer
         entities.get(0).animate(g);
 
         currentLevel.drawWorld(g);

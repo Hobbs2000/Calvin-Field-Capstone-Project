@@ -19,7 +19,6 @@ public class Controls implements KeyListener
      */
     public void update()
     {
-        System.out.println();
         //Will set up,right,down and left to the value (true or false) of their corresponding key
         up = keys[KeyEvent.VK_UP] || keys[KeyEvent.VK_W];
         right = keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_D];

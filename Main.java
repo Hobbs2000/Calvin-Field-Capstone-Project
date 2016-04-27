@@ -83,7 +83,7 @@ public class Main extends Canvas implements Runnable
      */
     public void run()
     {
-        while (true)
+        while (running)
         {
              try
             {
