@@ -15,6 +15,7 @@ public class AnimationTester extends Canvas implements Runnable
     private ArrayList<Entity> entities = new ArrayList<Entity>();
     private Level level = new Level();
     private final int WAIT = 10; //All thread sleeps need to be the same time to prevent visible stuttering
+    Renderer renderer;
 
     public AnimationTester()
     {
@@ -64,6 +65,10 @@ public class AnimationTester extends Canvas implements Runnable
         EnemySpawner spawner = new EnemySpawner(entities, level);
         spawner.startZombieSpawner(frame);
 
+        renderer = new Renderer(this, frame, entities, level);
+        Thread renderThread = new Thread(renderer);
+        renderThread.start();
+        
         Thread mainThread = new Thread(this);
         mainThread.start();
     }
@@ -75,8 +80,6 @@ public class AnimationTester extends Canvas implements Runnable
     {
         while (true)
         {
-            render();
-
             try
             {
                 Thread.sleep(WAIT);
@@ -85,52 +88,7 @@ public class AnimationTester extends Canvas implements Runnable
             {
                 e.printStackTrace();
             }
-
         }
-    }
-
-    /**
-     * Displays the graphics on the screen
-     * Will repeat as many times as possible in a second (no cap)
-     */
-    public void render()
-    {
-        BufferStrategy bs = getBufferStrategy();
-        //Checks to see if the BufferStrategy has already been created, it only needs to be created once
-        if (bs == null)
-        {
-            //Always do triple buffering (put 3 in the param)
-            createBufferStrategy(3);
-            return;
-        }
-
-        //Links the bufferStrategy and graphics, creating a graphics context
-        //Everything that deals with graphics is between the next line and g.dispose()
-        Graphics g = bs.getDrawGraphics();
-
-        //Set background to black
-        g.setColor(Color.white);
-        g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-
-
-        for (Entity entity : entities)
-        {
-            if (entity.hasAnimation() == true && !(entity instanceof Player))
-            {
-                entity.animate(g);
-            }
-        }
-
-        //Player is drawn on top most layer
-        entities.get(0).animate(g);
-
-        level.drawWorld(g);
-
-
-        g.dispose();
-
-        //Swap out and destroy old buffer(Frame) and show the new one
-        bs.show();
     }
 }
 

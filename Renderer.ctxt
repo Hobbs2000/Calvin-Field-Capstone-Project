@@ -1,2 +1,11 @@
 #BlueJ class context
-numComments=0
+comment0.params=canvas\ currentFrame\ entities\ level
+comment0.target=Renderer(java.awt.Canvas,\ javax.swing.JFrame,\ java.util.ArrayList,\ Level)
+comment0.text=\r\n\ \r\n
+comment1.params=
+comment1.target=void\ run()
+comment1.text=\r\n\ \r\n
+comment2.params=
+comment2.target=void\ renderAll()
+comment2.text=\r\n\ Displays\ the\ graphics\ on\ the\ screen\r\n\ Will\ repeat\ as\ many\ times\ as\ possible\ in\ a\ second\ (no\ cap)\ \r\n
+numComments=3
