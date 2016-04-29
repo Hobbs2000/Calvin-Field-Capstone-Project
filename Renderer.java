@@ -4,7 +4,10 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 /**
- * 
+ * Created by Calvin on 4/27/2016
+ * Draws everything onto the current canvas by calling the draw methods of all the entities and level tiles
+ * Does this on a separate thread
+ * Creates a triple buffered BufferStrategy to get the graphics context from
  */
 public class Renderer implements Runnable
 {
@@ -15,18 +18,21 @@ public class Renderer implements Runnable
     private boolean running = false;
     
     /**
-     * 
+     * @param canvas The canvas to draw onto
+     * @param currentFrame The current frame the canvas is on
+     * @param entities The ArrayList of all the entities to be drawn
+     * @param level The current level object
      */
     public Renderer(Canvas canvas, JFrame currentFrame, ArrayList<Entity> entities, Level level)
     {
         thisCanvas = canvas;
-        this.frame = currentFrame;
+        frame = currentFrame;
         this.entities = entities;
         currentLevel = level;
     }
     
     /**
-     * 
+     * Forever calls the renderAll() method
      */
     public void run()
     {
