@@ -32,7 +32,7 @@ public class Renderer implements Runnable
     }
     
     /**
-     * Forever calls the renderAll() method
+     * Repeatedly calls the renderAll() method
      */
     public void run()
     {

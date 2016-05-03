@@ -27,7 +27,7 @@ public class Main extends Canvas implements Runnable
     }
     
     /**
-     * 
+     * Creates a new Main object and starts it
      */
     public static void main(String[] args)
     {
@@ -50,7 +50,11 @@ public class Main extends Canvas implements Runnable
     }
     
     /**
-     * 
+     * Adds the player to the first index of enities
+     * Sets up everything to for the player, including creating and starting the playerHandler
+     * Sets up an enemy spawner and starts it
+     * Creates a renderer and starts rendering
+     * Begins the main thread
      */
     public synchronized void start()
     {

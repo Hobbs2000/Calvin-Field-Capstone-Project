@@ -4,10 +4,12 @@ import java.awt.*;
 
 /**
  * Created by Calvin on 4/17/2016.
+ * This is what the player and all entities will be in
  */
 public class Level
 {
-
+    //This is all of the world tiles
+    //They are arranged in how they will be displayed on screen
     private Tile[][] worldTiles;
 
     /**
@@ -19,7 +21,10 @@ public class Level
     }
 
     /**
-     *
+     * Generates a 2d array of ints. 
+     * Each int in the array stands for a different tile, and each
+     * value determines which tile will be in that position.
+     * After the 2d int array is created, it is passed into the interperetWorld method
      */
     public void createWorld()
     {
@@ -63,8 +68,8 @@ public class Level
     }
 
     /**
-     *
-     * @param g
+     * Draws all the tiles that are not null on the screen
+     * @param g The graphics context
      */
     public void drawWorld(Graphics g)
     {
@@ -81,10 +86,10 @@ public class Level
     }
 
     /**
-     *
-     * @param x
-     * @param y
-     * @return
+     * Gets the tile at the specified coordinates
+     * @param x The x coordinate (not the col index) 
+     * @param y The y coordinate (not the row index)
+     * @return 
      */
     public Tile getTile(int x, int y)
     {
@@ -109,9 +114,10 @@ public class Level
     }
 
     /**
-     *
-     * @param code
-     * @return
+     * Creates and returns a 2d array of Tiles, which are then initialized based on what values are in 
+     * the 2d array of ints code
+     * @param code A 2d array of ints used to determine what will be put in the Tiles array
+     * @return worldTiles A 2d array of Tiles 
      */
     public static Tile[][] interpretWorld(int[][] code)
     {

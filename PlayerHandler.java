@@ -17,12 +17,17 @@ public class PlayerHandler implements Runnable
     private int sleep;
     private boolean running;
 
-    //This stuff is for jumping 
+    //This stuff is for jumping
+    //yVelocity is the speed at which the player rises and falls
     int yVelocity = -20;
+    //This is what the yVelocity will be reset to when a jumping sequence is over
     int maxY_Velocity = -20;
+    //Gravity is what is added to yVelocity for making a parabola like jump
     int GRAVITY = 2;
     boolean jumping = false;
 
+    //The time in between the player taking damage
+    //The actual amount of time is sleep * invulnerableTime
     int invulnerableTime = 50;
 
     private Player thisPlayer;
@@ -50,7 +55,8 @@ public class PlayerHandler implements Runnable
     }
 
     /**
-     *
+     * Handles all player stuff
+     * Includes handling actions such as moving and collisions
      */
     public void run()
     {
@@ -59,15 +65,15 @@ public class PlayerHandler implements Runnable
 
         while(running)
         {
-
             //Get the key/s pressed
             controls.update();
 
             //Go through all entities and check for collisions
+            //This is how the player is damaged
             for (int i = 0; i < entities.size(); i++)
             {
                 boolean hasCollided = Collision.collided(this.thisPlayer, entities.get(i));
-                //Check to see if the entity is an enemy and the player invulnerability time is up
+                //Check to see if the entity is an enemy and the player's invulnerability time is up
                 if (entities.get(i) instanceof Enemy && hasCollided && invulnerableTime <= 0)
                 {
                     Enemy enemy = (Enemy)entities.get(i);
@@ -77,6 +83,7 @@ public class PlayerHandler implements Runnable
             }
             invulnerableTime--;
 
+            //Checks to see if the space key was pressed, which starts the jumping sequence by setting jumping to true
             if (controls.space)
             {
                 jumping = true;
@@ -104,13 +111,14 @@ public class PlayerHandler implements Runnable
             }
 
             //Move down because of gravity
+            //This is for regular falling, not jump falling, that is why it only executes when the player is not jumping
             if (!jumping)
             {
                 movePlayerDown(10);
             }
 
 
-            //Will actually move the player based on collisions and what keys were pressed
+            //Move the player based on collisions and what keys were pressed
             if (controls.right)
             {
                 movePlayerRight(this.thisPlayer.getSpeed());
@@ -129,13 +137,14 @@ public class PlayerHandler implements Runnable
             {
                 e.printStackTrace();
             }
-
         }
     }
 
     /**
-     *
-     * @param dx
+     * Gets the coordinates of 3 points along the right side of the bounding box of the player (top right, middle right, bottom right)
+     * Checks to see if any of those points would collide with a solid tile if the player were to move dx to the right
+     * If no collision, the player will be move to the new coordinates
+     * @param dx The amount to move player to the right 
      */
     public void movePlayerRight(int dx)
     {
@@ -163,15 +172,17 @@ public class PlayerHandler implements Runnable
         {
             return;
         }
-        else
+        else //If no collision, then actually move player to the right by dx amount
         {
             this.thisPlayer.setX(this.thisPlayer.getX() + dx);
         }
     }
 
     /**
-     *
-     * @param dx
+     * Gets the coordinates of 3 points along the left side of the player's bounding box (top left, middle left, bottom left)
+     * Checks to see if any of those points would collide with a solid tile if the player were to move dx amount to the left
+     * If no collision, the player will be move to the new coordinates
+     * @param dx The amount to move the player to the right
      */
     public void movePlayerLeft(int dx)
     {
@@ -199,15 +210,17 @@ public class PlayerHandler implements Runnable
         {
             return;
         }
-        else
+        else //If no collision, then move player to the left by dx amount
         {
             this.thisPlayer.setX(this.thisPlayer.getX() - dx);
         }
     }
 
     /**
-     *
-     * @param dy
+     * Gets the coordinates of 3 points along the bottom of the player's bounding box (bottom right, bottom middle, bottom left)
+     * Checks to see if any of those points would collide with a solid tile if the player were to move dy amount down
+     * If no collision, the player will be move to the new coordinates
+     * @param dy The amount to the move the player down 
      */
     public void movePlayerDown(int dy)
     {
@@ -235,15 +248,17 @@ public class PlayerHandler implements Runnable
             yVelocity = maxY_Velocity;
             return;
         }
-        else
+        else //If no collision, move player down by dy amount
         {
             this.thisPlayer.setY(this.thisPlayer.getY() + dy);
         }
     }
 
     /**
-     *
-     * @param dy
+     * Gets the coordinates of 3 points along the top of the player's bounding box (top right, top middle, top left)
+     * will check to see if any of those points would collide with a solid tile if the player were to move dy amount up.
+     * If no collision, the player will be move to the new coordinates
+     * @param dy The amount to move the player up
      */
     public void movePlayerUp(int dy)
     {

@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- *
+ * Gets key presses to control the player
  */
 public class Controls implements KeyListener
 {
