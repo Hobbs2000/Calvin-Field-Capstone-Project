@@ -74,13 +74,13 @@ public class Renderer implements Runnable
                 if (entity.hasAnimation() == true && !(entity instanceof Player))
                 {
                     //Animates every entity
-                    entity.animate(g);
+                    entity.draw(g);
                 }
             }
         }
 
         //Player is drawn on the top most layer
-        entities.get(0).animate(g);
+        entities.get(0).draw(g);
 
         currentLevel.drawWorld(g);
 

@@ -65,7 +65,12 @@ public class Zombie extends Enemy
      * Calls the draw method of all the animations for this enemy
      * @param g
      */
-    public void animate(Graphics g)
+    public void animate()
+    {
+        currentAnimation.increaseCount();
+    }
+    
+    public void draw(Graphics g)
     {
         currentAnimation.draw(g);
     }

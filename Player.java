@@ -22,7 +22,7 @@ public class Player extends Entity
     //These are the default values and may be changed
     public int damage = 10;
     public int health = 100;
-    private int speed = 5;
+    private int speed = 8;
 
     /**
      *
@@ -38,7 +38,7 @@ public class Player extends Entity
 
         try
         {   //The speed value needs to be adjusted for different computers (should really eidt the way animation frames are changed) 
-            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 10);
+            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 5);
             currentAnimation = walkForwardAnimation;
         }
         catch (IOException e)
@@ -60,7 +60,15 @@ public class Player extends Entity
      * Will call the draw method for the currentAnimation for the player
      * @param g The graphics component
      */
-    public void animate(Graphics g)
+    public void animate()
+    {
+        currentAnimation.increaseCount();
+    }
+    
+    /**
+     * 
+     */
+    public void draw(Graphics g)
     {
         currentAnimation.draw(g);
     }
@@ -121,17 +129,4 @@ public class Player extends Entity
         walkForwardAnimation.update(super.getX(), super.getY());
     }
 
-    /**
-     * Checks to see if the player moves speed amount to the right if it will hit the right bounds
-     * @param frameWidth The width of the current frame the player is in
-     * @return returns true if it is exceeding the right frame bounds false if not
-     */
-    public boolean exceedingBoundsRight(int frameWidth)
-    {
-        if ((this.getX() + this.getWidth() + this.speed) > frameWidth)
-        {
-            return true;
-        }
-        return false;
-    }
 }

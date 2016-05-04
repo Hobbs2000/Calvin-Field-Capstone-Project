@@ -89,6 +89,14 @@ public class Main extends Canvas implements Runnable
     {
         while (running)
         {
+            for (Entity entity : entities)
+            {
+                //This DOES NOT DRAW the entities to the screen
+                //It increases the animation count, allowing for a single set speed for every animation
+                entity.animate();
+            }
+            
+            
              try
             {
                 Thread.sleep(WAIT);

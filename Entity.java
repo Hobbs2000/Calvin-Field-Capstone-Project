@@ -91,7 +91,13 @@ public class Entity
      * Not implemented here 
      * Must be implemented in entity subclasses that have animations
      */
-    public void animate(Graphics g) {}
+    public void animate() {}
+    
+    /**
+     * 
+     */
+    public void draw(Graphics g)
+    {}
 
     /**
      * Will return if the entity can collide with other collidable entities

@@ -5,7 +5,7 @@ import java.awt.*;
  * Created by Calvin on 4/7/2016.
  * Will provide the basis for all enemies
  */
-abstract class Enemy extends Entity
+public class Enemy extends Entity
 {
     private int damage, health, speed;
     private boolean canMoveUp = true;

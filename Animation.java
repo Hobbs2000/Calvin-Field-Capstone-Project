@@ -46,7 +46,7 @@ public class Animation
      * Everytime draw is called the animation increments
      * @param g
      */
-    public void draw(Graphics g)
+    public void increaseCount()
     {
         if (currentStall >= maxStall)
         {
@@ -54,7 +54,13 @@ public class Animation
             nextFrame();
         }
         currentStall++;
-
+    }
+    
+    /**
+     * 
+     */
+    public void draw(Graphics g)
+    {
         //Scale the image when drawing it
         g.drawImage(sprites[currentIndex].getImage(), x, y, (int) (sprites[currentIndex].getWidth() * scale), (int) (sprites[currentIndex].getHeight() * scale), null);
     }
