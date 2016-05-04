@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 /**
+ * Created by Calvin on 4/12/2016
  * This will handle the players movements and collision detection
  * Will be on a separate thread
  * Has a keyboard listener class that will use input for player control
  * Most of the logic will be here
- * Created by Calvin on 4/12/2016.
  */
 public class PlayerHandler implements Runnable
 {
@@ -65,7 +65,7 @@ public class PlayerHandler implements Runnable
 
         while(running)
         {
-            //Get the key/s pressed
+            //Get the key/s pressed for this loop
             controls.update();
 
             //Go through all entities and check for collisions

@@ -1,4 +1,3 @@
- 
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -75,6 +74,7 @@ public class Animation
 
     /**
      * Will update the x and y so the images are drawn in the same location as the entity
+     * Must be called every time the entity's location in moved
      */
     public void update(int newX, int newY)
     {
@@ -101,7 +101,7 @@ public class Animation
      * Will run once
      * Fills in the sprites array with the sub-images from the parent sprite-sheet
      */
-    public void setupImages()
+    private void setupImages()
     {
         int spriteIndex = 0;
         for(int row = 0; row < parentSpriteSheet.getHeight(); row += sectionHeight)
@@ -113,10 +113,8 @@ public class Animation
                 sprites[spriteIndex] = new Sprite(parentSpriteSheet, col, row, sectionWidth, sectionHeight, scale);
                 spriteIndex++;
             }
-
             if (spriteIndex > sprites.length-1) {break;}
         }
-
     }
 
 

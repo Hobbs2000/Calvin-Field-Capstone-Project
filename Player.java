@@ -24,16 +24,6 @@ public class Player extends Entity
     public int health = 100;
     private int speed = 5;
 
-    private boolean movingUp = false;
-    private boolean canMoveDown = true;
-    private boolean movingDown = false;
-    private boolean movingRight = false;
-    private boolean movingLeft = false;
-
-    private int yVelocity = -150;
-    private boolean jumping = false;
-
-
     /**
      *
      * @param startX
@@ -47,11 +37,9 @@ public class Player extends Entity
         this.scale = scale;
 
         try
-        {
-            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 70);
+        {   //The speed value needs to be adjusted for different computers (should really eidt the way animation frames are changed) 
+            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 10);
             currentAnimation = walkForwardAnimation;
-
-            //walkBackAnimation = new Animation(ImageIO.read(getClass().getResource("/scottpilgrim_sheet.jpg")), 32, 36, 8, super.getX(), super.getY(), this.scale, 1.5);
         }
         catch (IOException e)
         {
@@ -60,82 +48,12 @@ public class Player extends Entity
     }
 
     /**
-     *
+     * The player IS collidable with other entities
      * @return
      */
     public boolean isCollidable()
     {
         return true;
-    }
-
-    /**
-     * Moves the player's x coordinate speed amount
-     * @param direction True means right and false means left
-     */
-    public void moveHorizontal(boolean direction)
-    {
-        if (direction == true)
-        {
-            movingRight = true;
-            movingRight = false;
-            this.setX(super.getX() + this.speed);
-            this.currentAnimation = walkForwardAnimation;
-        }
-        else
-        {
-            movingLeft = true;
-            movingRight = false;
-            this.setX(super.getX() - this.speed);
-            this.currentAnimation = walkBackAnimation;
-        }
-        walkForwardAnimation.update(super.getX(), super.getY());
-
-        if (currentAnimation != walkForwardAnimation)
-        {
-            currentAnimation = walkForwardAnimation;
-        }
-    }
-
-    //Will nearly always be called since there is gravity
-    /**
-     *  Moves the player down by gravity amount
-     *  @param gravity Will be the amount that the player is moved down by
-     */
-    public void moveDown(int gravity)
-    {
-        if ( canMoveDown == true )
-        {
-            movingDown = true;
-            movingUp = false;
-            super.setY(super.getY() + gravity);
-        }
-    }
-
-    /**
-     *
-     */
-    public void moveUp(int amount)
-    {
-        super.setY(super.getY() - amount);
-    }
-
-    /**
-     *
-     */
-    public void jump(int gravity)
-    {
-        jumping = true;
-        yVelocity += gravity;
-        super.setY(super.getY() + yVelocity);
-    }
-
-    /**
-     *
-     */
-    public void stopJumping()
-    {
-        jumping = false;
-        yVelocity = -90;
     }
 
     /**
@@ -149,6 +67,7 @@ public class Player extends Entity
 
     /**
      * Returns true since all players have an animation
+     * Not really needed
      * @return Returns true
      */
     public boolean hasAnimation()
@@ -157,15 +76,7 @@ public class Player extends Entity
     }
 
     /**
-     *
-     */
-    public boolean isJumping()
-    {
-        return jumping;
-    }
-
-    /**
-     *
+     * @return speed - The speed in pixels of the player
      */
     public int getSpeed()
     {
@@ -183,7 +94,7 @@ public class Player extends Entity
 
     /**
      * Will multiply the original pixel width of the player by its scale to get the current real pixel width
-     * @return Returns the actually width of the player
+     * @return Returns the actual width of the player
      */
     public int getHeight()
     {
@@ -191,7 +102,7 @@ public class Player extends Entity
     }
 
     /**
-     *
+     * Sets the new x-coordinate of the player
      * @param newX
      */
     public void setX(int newX)
@@ -201,7 +112,7 @@ public class Player extends Entity
     }
 
     /**
-     *
+     * Sets the new y-corrdinate of the player
      * @param newY
      */
     public void setY(int newY)
@@ -223,45 +134,4 @@ public class Player extends Entity
         }
         return false;
     }
-
-    /**
-     * Checks to see if the player moves speed amount to the left if it will hit the left bounds
-     * @return returns true if it is exceeding the left frame bounds false if not
-     */
-    public boolean exceedingBoundsLeft()
-    {
-        if ((this.getX() - this.speed) < 0)
-        {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Checks to see if the player moves speed amount up if it will hit the top
-     * @return returns true if it is exceeding the top frame bounds false if not
-     */
-    public boolean exceedingBoundsTop()
-    {
-        if ((this.getY() - speed) < 0)
-        {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Checks if the player moves gravity amount down it will hit the bottom of the frame
-     * @param gravity Will be used to look ahead and see if the player moves gravity amount will it reach the bottom
-     * @param frameHeight The height of the main frame that the player is in
-     * @return returns true if it is exceeding the bottom frame bounds false if not
-     */
-    public boolean exceedingBoundsBottom(int frameHeight, int gravity)
-    {
-        if ((this.getY() + this.getHeight() + gravity) > frameHeight)
-        {
-            return true;
-        }
-        return false;
-    }
-
-
 }

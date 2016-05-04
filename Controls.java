@@ -4,7 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
+ * Created by Calvin on 4/12/20
+ * <pre>This class is based off of the idea and some code from here:
+ * http://gamedev.stackexchange.com/questions/56017/java-best-implementation-keylistener-for-games</pre>
  * Gets key presses to control the player
+ * Could make this an inner class in player handler, but this controller could be used elsewhere
  */
 public class Controls implements KeyListener
 {
@@ -28,17 +32,19 @@ public class Controls implements KeyListener
     }
 
     /**
-     *
+     * When a key is pressed, the corresponding element at the index of keyCode is turned to true
      * @param e
      */
     @Override
     public void keyPressed(KeyEvent e)
     {
+        /*Key code is an index which corresponds to the key pressed
+        When a key is pressed, that boolean element in the array is turned to true*/
         keys[e.getKeyCode()] = true;
     }
 
     /**
-     *
+     * When a key is released, the corresponding element at the index of keyCode is turned to false
      * @param e
      */
     @Override
@@ -48,7 +54,7 @@ public class Controls implements KeyListener
     }
 
     /**
-     *
+     * Does nothing
      * @param e
      */
     @Override

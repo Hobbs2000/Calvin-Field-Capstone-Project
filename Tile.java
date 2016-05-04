@@ -7,6 +7,7 @@ import java.io.IOException;
 
 /**
  * Created by Calvin on 4/16/2016.
+ * The basic tile that all other tiles will extend off of
  */
 public class Tile extends Entity
 {

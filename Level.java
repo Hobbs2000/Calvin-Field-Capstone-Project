@@ -21,8 +21,8 @@ public class Level
     }
 
     /**
-     * Generates a 2d array of ints. 
-     * Each int in the array stands for a different tile, and each
+     * Generates a 2d array of ints, 
+     * and each int in the array stands for a different tile, and each
      * value determines which tile will be in that position.
      * After the 2d int array is created, it is passed into the interperetWorld method
      */
@@ -117,7 +117,7 @@ public class Level
      * Creates and returns a 2d array of Tiles, which are then initialized based on what values are in 
      * the 2d array of ints code
      * @param code A 2d array of ints used to determine what will be put in the Tiles array
-     * @return worldTiles A 2d array of Tiles 
+     * @return worldTiles - A 2d array of Tiles 
      */
     public static Tile[][] interpretWorld(int[][] code)
     {

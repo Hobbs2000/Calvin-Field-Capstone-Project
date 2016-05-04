@@ -105,6 +105,7 @@ public class Entity
 
     /**
      * Will return if the entity's sprite is scaled or not
+     * @return Defaults to false
      */
     public boolean isScaled()
     {

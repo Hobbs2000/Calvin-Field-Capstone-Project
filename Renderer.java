@@ -73,6 +73,7 @@ public class Renderer implements Runnable
             {
                 if (entity.hasAnimation() == true && !(entity instanceof Player))
                 {
+                    //Animates every entity
                     entity.animate(g);
                 }
             }
@@ -82,7 +83,6 @@ public class Renderer implements Runnable
         entities.get(0).animate(g);
 
         currentLevel.drawWorld(g);
-
 
         g.dispose();
 
