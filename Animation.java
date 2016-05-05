@@ -43,8 +43,9 @@ public class Animation
     }
 
     /**
-     * Everytime draw is called the animation increments
-     * @param g
+     * Everytime this is called the animation num varible increments, 
+     * This is the speed that the animation goes through the sprites
+     * @param g The graphics context
      */
     public void increaseCount()
     {

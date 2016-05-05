@@ -36,7 +36,9 @@ public class EnemyHandler implements Runnable
         this.currentLevel = level;
     }
 
-    //Will deal with enemies movements on a different thread
+    /**
+     * 
+     */
     public void run()
     {
         moverRunning = true;

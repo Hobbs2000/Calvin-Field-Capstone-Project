@@ -4,6 +4,7 @@ comment0.target=EnemyHandler(Enemy,\ java.util.ArrayList,\ int,\ javax.swing.JFr
 comment0.text=\r\n\r\n
 comment1.params=
 comment1.target=void\ run()
+comment1.text=\r\n\ \r\n
 comment2.params=dx
 comment2.target=void\ moveEnemyRight(int)
 comment2.text=\r\n\r\n\ @param\ dx\r\n

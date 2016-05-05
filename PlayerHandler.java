@@ -62,26 +62,12 @@ public class PlayerHandler implements Runnable
     {
         running = true;
 
-
         while(running)
         {
             //Get the key/s pressed for this loop
             controls.update();
 
-            //Go through all entities and check for collisions
-            //This is how the player is damaged
-            for (int i = 0; i < entities.size(); i++)
-            {
-                boolean hasCollided = Collision.collided(this.thisPlayer, entities.get(i));
-                //Check to see if the entity is an enemy and the player's invulnerability time is up
-                if (entities.get(i) instanceof Enemy && hasCollided && invulnerableTime <= 0)
-                {
-                    Enemy enemy = (Enemy)entities.get(i);
-                    this.thisPlayer.health -= enemy.getDamage();
-                    invulnerableTime = 50;
-                }
-            }
-            invulnerableTime--;
+       
 
             //Checks to see if the space key was pressed, which starts the jumping sequence by setting jumping to true
             if (controls.space)
@@ -123,24 +109,39 @@ public class PlayerHandler implements Runnable
             if (controls.right)
             {
                 movePlayerRight(this.thisPlayer.getSpeed());
+                //Change the animation to the walking left animation
+                this.thisPlayer.setCurrentAnimation(this.thisPlayer.WALK_RIGHT_ANIMATION);
                 this.thisPlayer.isStill = false;
             }
             if (controls.left)
             {
                 movePlayerLeft(this.thisPlayer.getSpeed());
+                //Change the animation to the walking left animation
+                this.thisPlayer.setCurrentAnimation(this.thisPlayer.WALK_LEFT_ANIMATION);
                 this.thisPlayer.isStill = false;
             }
             //If not moving, the player is standing still, which will display a different image
             if (!controls.right && !controls.left && !jumping)
             {
-                System.out.println("Here");
                 this.thisPlayer.isStill = true;
             }
-            else
+            
+            //Go through all entities and check for collisions with enemies
+            //This is how the player is damaged
+            for (Entity entity : entities)
             {
-                System.out.println("not");
+                if (entity instanceof Enemy)
+                {
+                    Enemy enemy = (Enemy) entity;
+                    
+                    if (Collision.collided(this.thisPlayer, enemy) && invulnerableTime <= 0)
+                    {
+                        this.thisPlayer.health -= enemy.getDamage();
+                        invulnerableTime = 50;
+                    }
+                }
             }
-
+            invulnerableTime--;
 
             try
             {

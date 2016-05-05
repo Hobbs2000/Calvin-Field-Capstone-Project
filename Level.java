@@ -6,7 +6,7 @@ import java.awt.*;
  * Created by Calvin on 4/17/2016.
  * This is what the player and all entities will be in
  */
-public class Level
+public class Level 
 {
     //This is all of the world tiles
     //They are arranged in how they will be displayed on screen

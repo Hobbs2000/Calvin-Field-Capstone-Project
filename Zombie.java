@@ -62,7 +62,8 @@ public class Zombie extends Enemy
     }
 
     /**
-     * Calls the draw method of all the animations for this enemy
+     * Increments the animation count,
+     * This is the speed of the animation
      * @param g
      */
     public void animate()
@@ -70,13 +71,16 @@ public class Zombie extends Enemy
         currentAnimation.increaseCount();
     }
     
+    /**
+     * Draws the current animation/image of the Zombie
+     */
     public void draw(Graphics g)
     {
         currentAnimation.draw(g);
     }
 
     /**
-     *
+     * @return True
      */
     public boolean hasAnimation()
     {
@@ -84,7 +88,7 @@ public class Zombie extends Enemy
     }
 
     /**
-     *
+     * @return The actually pixel width of the zombie 
      */
     public int getWidth()
     {
@@ -92,7 +96,7 @@ public class Zombie extends Enemy
     }
 
     /**
-     *
+     * @return The actually pixel height of the zombie 
      */
     public int getHeight()
     {

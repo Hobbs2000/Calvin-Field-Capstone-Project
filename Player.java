@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
  */
 public class Player extends Entity
 {
-    private Animation walkForwardAnimation;
-    private Animation walkBackAnimation;
+    public Animation WALK_RIGHT_ANIMATION;
+    public Animation WALK_LEFT_ANIMATION;
     private Animation currentAnimation;
     
     private BufferedImage stillSprite;
@@ -22,6 +22,7 @@ public class Player extends Entity
     private int originalSpriteWidth = 14;
     private int originalSpriteHeight = 30;
     private double scale;
+    private int animationSpeed = 5;
 
     //These are the default values and may be changed
     public int damage = 10;
@@ -41,9 +42,11 @@ public class Player extends Entity
         this.scale = scale;
 
         try
-        {   //The speed value needs to be adjusted for different computers (should really eidt the way animation frames are changed) 
-            walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 5);
-            currentAnimation = walkForwardAnimation;
+        {  
+            WALK_RIGHT_ANIMATION = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, this.animationSpeed);
+            currentAnimation = WALK_RIGHT_ANIMATION;
+            
+            WALK_LEFT_ANIMATION = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheetLeft.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, this.animationSpeed);
             
             stillSprite = ImageIO.read(getClass().getResource("/StandingBasicPlayer.png"));
         }
@@ -63,8 +66,8 @@ public class Player extends Entity
     }
 
     /**
-     * Will call the draw method for the currentAnimation for the player
-     * @param g The graphics component
+     * Increments the animation count,
+     * This is the speed of the animation
      */
     public void animate()
     {
@@ -72,12 +75,13 @@ public class Player extends Entity
     }
     
     /**
-     * 
+     * Calls the draw method on what every animation/image should be displayed
      */
     public void draw(Graphics g)
     {
         if (isStill)
         {
+            //Will render a still image of the player sprite if the player is still 
             g.drawImage(stillSprite, getX(), getY(), (int)(stillSprite.getWidth() * scale), (int) (stillSprite.getHeight() * scale), null);
         }
         else
@@ -129,7 +133,9 @@ public class Player extends Entity
     public void setX(int newX)
     {
         super.setX(newX);
-        walkForwardAnimation.update(super.getX(), super.getY());
+        //Need to update all animations coordinates
+        WALK_RIGHT_ANIMATION.update(super.getX(), super.getY());
+        WALK_LEFT_ANIMATION.update(super.getX(), super.getY());
     }
 
     /**
@@ -139,7 +145,27 @@ public class Player extends Entity
     public void setY(int newY)
     {
         super.setY(newY);
-        walkForwardAnimation.update(super.getX(), super.getY());
+        //Need to update all animations coordinates
+        WALK_RIGHT_ANIMATION.update(super.getX(), super.getY());
+        WALK_LEFT_ANIMATION.update(super.getX(), super.getY());
+    }
+    
+    /**
+     * Will return the animation that is currently being displayed
+     * @return The animation that is currently being displayed (this animation will not be rendered if the player is standing still)
+     */
+    public Animation getCurrentAnimation()
+    {
+        return currentAnimation;
+    }
+    
+    /**
+     * Sets the currentAnimation to be displayed.
+     * Should only use animation variables from the Player class
+     */
+    public void setCurrentAnimation(Animation newAnimation)
+    {
+        currentAnimation = newAnimation;
     }
 
 }
