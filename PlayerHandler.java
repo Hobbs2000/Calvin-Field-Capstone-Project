@@ -87,6 +87,7 @@ public class PlayerHandler implements Runnable
             if (controls.space)
             {
                 jumping = true;
+                this.thisPlayer.isStill = false;
             }
             if (jumping)
             {
@@ -122,10 +123,22 @@ public class PlayerHandler implements Runnable
             if (controls.right)
             {
                 movePlayerRight(this.thisPlayer.getSpeed());
+                this.thisPlayer.isStill = false;
             }
             if (controls.left)
             {
                 movePlayerLeft(this.thisPlayer.getSpeed());
+                this.thisPlayer.isStill = false;
+            }
+            //If not moving, the player is standing still, which will display a different image
+            if (!controls.right && !controls.left && !jumping)
+            {
+                System.out.println("Here");
+                this.thisPlayer.isStill = true;
+            }
+            else
+            {
+                System.out.println("not");
             }
 
 
@@ -245,6 +258,7 @@ public class PlayerHandler implements Runnable
         if ((tile1 != null && tile1.isSolid()) || (tile2 != null && tile2.isSolid()) || (tile3 != null && tile3.isSolid()))
         {
             jumping = false;
+            this.thisPlayer.isStill = true;
             yVelocity = maxY_Velocity;
             return;
         }

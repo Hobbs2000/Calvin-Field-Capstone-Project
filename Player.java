@@ -3,6 +3,7 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.awt.image.BufferedImage;
 
 /**
  * The user controlled player
@@ -14,6 +15,9 @@ public class Player extends Entity
     private Animation walkForwardAnimation;
     private Animation walkBackAnimation;
     private Animation currentAnimation;
+    
+    private BufferedImage stillSprite;
+    public boolean isStill = true;
     //Make the actual size 2 pixel smaller before scaling
     private int originalSpriteWidth = 14;
     private int originalSpriteHeight = 30;
@@ -40,6 +44,8 @@ public class Player extends Entity
         {   //The speed value needs to be adjusted for different computers (should really eidt the way animation frames are changed) 
             walkForwardAnimation = new Animation(ImageIO.read(getClass().getResource("/BasicPlayerSheet.png")), 16, 32, 5, super.getX(), super.getY(), this.scale, 5);
             currentAnimation = walkForwardAnimation;
+            
+            stillSprite = ImageIO.read(getClass().getResource("/StandingBasicPlayer.png"));
         }
         catch (IOException e)
         {
@@ -70,7 +76,14 @@ public class Player extends Entity
      */
     public void draw(Graphics g)
     {
-        currentAnimation.draw(g);
+        if (isStill)
+        {
+            g.drawImage(stillSprite, getX(), getY(), (int)(stillSprite.getWidth() * scale), (int) (stillSprite.getHeight() * scale), null);
+        }
+        else
+        {
+            currentAnimation.draw(g);
+        }
     }
 
     /**

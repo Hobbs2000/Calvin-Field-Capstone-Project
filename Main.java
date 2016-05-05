@@ -61,7 +61,7 @@ public class Main extends Canvas implements Runnable
         running = true;
         
         //Starting all player stuff
-        entities.add(new Player(240, 300, 2.5));
+        entities.add(new Player(240, 300, 2.7));
         Controls controls = new Controls();
         super.addKeyListener(controls);
         PlayerHandler playerHandler = new PlayerHandler((Player)entities.get(0), entities, WAIT, frame, controls, level);
