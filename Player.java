@@ -27,7 +27,7 @@ public class Player extends Entity
     //These are the default values and may be changed
     public int damage = 10;
     public int health = 100;
-    private int speed = 8;
+    private int speed = 7;
 
     /**
      *
@@ -133,7 +133,7 @@ public class Player extends Entity
     public void setX(int newX)
     {
         super.setX(newX);
-        //Need to update all animations coordinates
+        //Need to update all animation coordinates
         WALK_RIGHT_ANIMATION.update(super.getX(), super.getY());
         WALK_LEFT_ANIMATION.update(super.getX(), super.getY());
     }
@@ -145,7 +145,7 @@ public class Player extends Entity
     public void setY(int newY)
     {
         super.setY(newY);
-        //Need to update all animations coordinates
+        //Need to update all animation coordinates
         WALK_RIGHT_ANIMATION.update(super.getX(), super.getY());
         WALK_LEFT_ANIMATION.update(super.getX(), super.getY());
     }

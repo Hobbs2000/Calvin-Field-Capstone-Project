@@ -28,7 +28,7 @@ public class PlayerHandler implements Runnable
 
     //The time in between the player taking damage
     //The actual amount of time is sleep * invulnerableTime
-    int invulnerableTime = 50;
+    int invulnerableTime = 70;
 
     private Player thisPlayer;
     private Controls controls;
@@ -137,7 +137,7 @@ public class PlayerHandler implements Runnable
                     if (Collision.collided(this.thisPlayer, enemy) && invulnerableTime <= 0)
                     {
                         this.thisPlayer.health -= enemy.getDamage();
-                        invulnerableTime = 50;
+                        invulnerableTime = 70;
                     }
                 }
             }

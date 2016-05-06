@@ -49,6 +49,28 @@ public class EnemySpawner
             {
                 e.printStackTrace();
             }
+            
+            do
+            {
+                int x = Math.random() * frame.getWidth();
+                int y = Math.random() * frame.getHeight();
+                
+                //TODO: get rid of these magic numbers
+                int topRightY = y;
+                int topRightX = x + 64;
+                
+                int bottomLeftY = y + 64;
+                int bottomLeftX = x;
+                
+                int bottomRightY = y + 64;
+                int bottomRightX = x + 64;
+                
+                Tile tile1 = currentLevel.getTile(x, y);
+                Tile tile2 = currentLevel.getTile(topRightX, topRightY);
+                Tile tile3 = currentLevel.getTile(bottomLeftX, bottomLeftY);
+                Tile tile4 = currentLevel.getTile(bottomLeftX, bottomLeftY);
+            } while();
+                
 
             //Any thread that uses/changes the entities ArrayList must be in a synchronized code block
             synchronized (entities)

@@ -14,7 +14,10 @@ public class EnemyHandler implements Runnable
     private ArrayList<Entity> entities;
     private int sleep;
 
-    public boolean moverRunning = false;
+    private boolean moverRunning = false;
+    
+    private int changeDirTime = 20;
+    private int direction = 0;
 
     private Level currentLevel;
 
@@ -45,19 +48,26 @@ public class EnemyHandler implements Runnable
 
         while(moverRunning)
         {
-            //Gets a random number that will determine which direction the enemy goes
-            int moveHorizontal = (int)(Math.random() * 200);
-
-            if (moveHorizontal < 100)
+            //Will only have the possibility to change direction if the changeDirTime is 0 or below
+            if (changeDirTime <= 0)
             {
+                //Gets a random number that will determine which direction the enemy goes
+                direction = (int)(Math.random() * 2);
+                changeDirTime = 20;
+            }
+            changeDirTime --;
 
+            //Move the correct direction
+            if (direction <= 0)
+            {
                 moveEnemyRight(10);
             }
-            else if (moveHorizontal > 100)
+            else if (direction >= 1)
             {
                 moveEnemyLeft(10);
             }
 
+            //always apply downward gravity (when not jumping)
             moveEnemyDown(20);
 
             try
