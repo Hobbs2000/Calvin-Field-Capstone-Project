@@ -1,6 +1,7 @@
 
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by Calvin on 4/17/2016.
@@ -11,12 +12,15 @@ public class Level
     //This is all of the world tiles
     //They are arranged in how they will be displayed on screen
     private Tile[][] worldTiles;
+    
+    private BufferedImage background;
 
     /**
      *
      */
-    public Level()
+    public Level(BufferedImage background)
     {
+        this.background = background;
         createWorld();
     }
 
@@ -83,6 +87,15 @@ public class Level
                 }
             }
         }
+    }
+    
+    /**
+     * Draws the background image for the level
+     * Should be drawn before everything else
+     */
+    public void drawBackground(Graphics g)
+    {
+       g.drawImage(background, 0,0, null); 
     }
 
     /**

@@ -50,35 +50,44 @@ public class EnemySpawner
                 e.printStackTrace();
             }
             
+            //Repeatidly pick a coordinate and check to see if it will collide with any tiles
+            //If not, then spawn the enemy in that location
+            boolean hasSpawned = false;
             do
             {
-                int x = Math.random() * frame.getWidth();
-                int y = Math.random() * frame.getHeight();
+                int x = (int)(Math.random() * frame.getWidth());
+                int y = (int)(Math.random() * frame.getHeight());
                 
                 //TODO: get rid of these magic numbers
                 int topRightY = y;
-                int topRightX = x + 64;
+                int topRightX = x + 100;
                 
-                int bottomLeftY = y + 64;
+                int bottomLeftY = y + 100;
                 int bottomLeftX = x;
                 
-                int bottomRightY = y + 64;
-                int bottomRightX = x + 64;
+                int bottomRightY = y + 100;
+                int bottomRightX = x + 100;
                 
                 Tile tile1 = currentLevel.getTile(x, y);
                 Tile tile2 = currentLevel.getTile(topRightX, topRightY);
-                Tile tile3 = currentLevel.getTile(bottomLeftX, bottomLeftY);
+                Tile tile3 = currentLevel.getTile(bottomRightX, bottomRightY);
                 Tile tile4 = currentLevel.getTile(bottomLeftX, bottomLeftY);
-            } while();
-                
-
-            //Any thread that uses/changes the entities ArrayList must be in a synchronized code block
-            synchronized (entities)
-            {
-                //Adds a new zombie and creates a handler for it
-                entities.add(new Zombie(230, 90, 3));
-                new Thread(new EnemyHandler((Enemy)entities.get(entities.size()-1),entities, 50, frame, currentLevel)).start();
-            }
+ 
+                if ((tile1 != null && tile1.isSolid()) ||
+                    (tile2 != null && tile2.isSolid()) ||
+                    (tile3 != null && tile3.isSolid()) ||
+                    (tile4 != null && tile4.isSolid()))
+                {
+                    hasSpawned = true;              
+                    //Any thread that uses/changes the entities ArrayList must be in a synchronized code block
+                    synchronized (entities)
+                    {
+                        //Adds a new zombie and creates a handler for it
+                        entities.add(new Zombie(x, y, 3));
+                        new Thread(new EnemyHandler((Enemy)entities.get(entities.size()-1),entities, 50, frame, currentLevel)).start();
+                    }
+                }
+            } while(!hasSpawned);
         }
     }
 }

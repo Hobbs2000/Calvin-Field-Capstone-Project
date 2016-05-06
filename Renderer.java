@@ -66,6 +66,9 @@ public class Renderer implements Runnable
         g.setColor(Color.white);
         g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 
+        //Draw the level background for this level
+        currentLevel.drawBackground(g);
+        
         //Synchronized to avoid a concurrent modification error
         synchronized (entities)
         {

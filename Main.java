@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ public class Main extends Canvas implements Runnable
     public JFrame frame;
     private boolean running = false;
     private ArrayList<Entity> entities = new ArrayList<Entity>();
-    private Level level = new Level();
+    private Level level;
     private final int WAIT = 10; //All thread sleeps need to be the same time to prevent visible stuttering
 
     /**
@@ -59,6 +61,15 @@ public class Main extends Canvas implements Runnable
     public synchronized void start()
     {
         running = true;
+        
+        try
+        {
+            level = new Level(ImageIO.read(getClass().getResource("/background_1.png")));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
         
         //Starting all player stuff
         entities.add(new Player(240, 300, 2.7));
