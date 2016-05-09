@@ -27,6 +27,7 @@ public class Player extends Entity
     //These are the default values and may be changed
     public int damage = 10;
     public int health = 100;
+    private HealthBar healthBar;
     private int speed = 7;
 
     /**
@@ -40,6 +41,8 @@ public class Player extends Entity
         super(startX, startY, 16, 32);
 
         this.scale = scale;
+        
+        healthBar = new HealthBar(startX - 30, startY - 20, 100, 20);
 
         try
         {  
@@ -88,6 +91,9 @@ public class Player extends Entity
         {
             currentAnimation.draw(g);
         }
+        
+        healthBar.scale(this.health);
+        healthBar.draw(g);
     }
 
     /**
@@ -133,6 +139,8 @@ public class Player extends Entity
     public void setX(int newX)
     {
         super.setX(newX);
+        //Update health bar
+        healthBar.setLocation((newX - 30), (int)healthBar.getY());
         //Need to update all animation coordinates
         WALK_RIGHT_ANIMATION.update(super.getX(), super.getY());
         WALK_LEFT_ANIMATION.update(super.getX(), super.getY());
@@ -145,6 +153,8 @@ public class Player extends Entity
     public void setY(int newY)
     {
         super.setY(newY);
+        //Update health bar
+        healthBar.setLocation((int)healthBar.getX(), (newY - 20));
         //Need to update all animation coordinates
         WALK_RIGHT_ANIMATION.update(super.getX(), super.getY());
         WALK_LEFT_ANIMATION.update(super.getX(), super.getY());

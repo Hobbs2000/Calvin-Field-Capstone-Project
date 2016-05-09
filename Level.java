@@ -83,7 +83,7 @@ public class Level
             {
                 if (worldTiles[r][c] != null)
                 {
-                    worldTiles[r][c].animate(g);
+                    worldTiles[r][c].draw(g);
                 }
             }
         }

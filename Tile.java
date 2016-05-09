@@ -43,15 +43,9 @@ public class Tile extends Entity
     {
         sprite = newSprite;
     }
-
-    /**
-     *
-     * @param g
-     */
-    public void animate(Graphics g)
+    
+    public void draw(Graphics g)
     {
-        //g.setColor(Color.WHITE);
-        //g.fillRect(getX(), getY(), getWidth(), getHeight());
         g.drawImage(sprite, getX(), getY(), getWidth(), getHeight(), null);
     }
 

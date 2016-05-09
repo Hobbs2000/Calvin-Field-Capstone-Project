@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=x\ y\ width\ height
+comment0.target=HealthBar(int,\ int,\ int,\ int)
+comment0.text=\r\n\ \r\n
+comment1.params=newColor
+comment1.target=void\ setColor(java.awt.Color)
+comment1.text=\r\n\ Sets\ the\ current\ color\ of\ the\ healthBar\r\n
+comment2.params=g
+comment2.target=void\ draw(java.awt.Graphics)
+comment2.text=\r\n\ This\ draws\ the\ healthBar\ in\ its\ current\ location\ \ \r\n
+comment3.params=currentHealth
+comment3.target=void\ scale(int)
+comment3.text=\r\n\ Scales\ the\ healthBar\ according\ to\ the\ health\ of\ the\ entity\r\n
+numComments=4
