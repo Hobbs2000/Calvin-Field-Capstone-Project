@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * This will handle the players movements and collision detection
  * Will be on a separate thread
  * Has a keyboard listener class that will use input for player control
- * Most of the logic will be here
+ * Most of the logic for the player will be here
  */
 public class PlayerHandler implements Runnable
 {
@@ -66,9 +66,25 @@ public class PlayerHandler implements Runnable
         {
             //Get the key/s pressed for this loop
             controls.update();
-
-       
-
+            
+            //Go through all entities and check for collisions with enemies
+            //This is how the player is damaged
+            for (Entity entity : entities)
+            {
+                if (entity instanceof Enemy)
+                {
+                    Enemy enemy = (Enemy) entity;
+                    
+                    if (Collision.collided(this.thisPlayer, enemy) && invulnerableTime <= 0)
+                    {
+                        this.thisPlayer.health -= enemy.getDamage();
+                        invulnerableTime = 70;
+                    }
+                }
+            }
+            invulnerableTime--;
+            
+            
             //Checks to see if the space key was pressed, which starts the jumping sequence by setting jumping to true
             if (controls.space)
             {
@@ -125,23 +141,6 @@ public class PlayerHandler implements Runnable
             {
                 this.thisPlayer.isStill = true;
             }
-            
-            //Go through all entities and check for collisions with enemies
-            //This is how the player is damaged
-            for (Entity entity : entities)
-            {
-                if (entity instanceof Enemy)
-                {
-                    Enemy enemy = (Enemy) entity;
-                    
-                    if (Collision.collided(this.thisPlayer, enemy) && invulnerableTime <= 0)
-                    {
-                        this.thisPlayer.health -= enemy.getDamage();
-                        invulnerableTime = 70;
-                    }
-                }
-            }
-            invulnerableTime--;
 
             try
             {
@@ -305,6 +304,7 @@ public class PlayerHandler implements Runnable
             this.thisPlayer.setY(this.thisPlayer.getY() - dy);
         }
     }
+    
 
     /**
      * Stops the run loop which ends the thread

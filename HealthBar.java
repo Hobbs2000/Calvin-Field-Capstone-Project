@@ -1,10 +1,12 @@
 import java.awt.*;
 /**
+ * Created by Calvin on 5/9/16
  * A bar to show how much health an entity has
  */
 public class HealthBar extends Rectangle
 {
     int maxWidth;
+    int entityHealth = 100;
     Color color = Color.RED;
     
     /**
@@ -25,12 +27,16 @@ public class HealthBar extends Rectangle
     }
     
     /**
-     * This draws the healthBar in its current location  
+     * This draws the healthBar in its current location and also draws the the health number
      */
     public void draw(Graphics g)
     {
         g.setColor(this.color);
         g.fillRect((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
+        Graphics2D g2 = (Graphics2D)g;
+        Integer healthInteger = (Integer)entityHealth;
+        g2.setColor(Color.BLACK);
+        g2.drawString(healthInteger.toString(), (int)((getX()+(getWidth()/2))-10), (int)((getY()+(getHeight()/2))+5));
     }
     
     /**
@@ -38,13 +44,12 @@ public class HealthBar extends Rectangle
      */
     public void scale(int currentHealth)
     {
-        if (currentHealth != 0)
+        if (currentHealth >= 0)
         {
             //This should not be a set number (should be different max healths for different entities)
-            float percent = (currentHealth / 100);
-            System.out.println("health:"+currentHealth);
-            System.out.println("percent:"+percent);
+            double percent = (currentHealth / 100.0);
             setSize((int)(maxWidth*percent), (int)getHeight());
+            entityHealth = currentHealth;
         }
     }
 }

@@ -82,10 +82,10 @@ public class Renderer implements Runnable
             }
         }
 
+        currentLevel.drawWorld(g);
+        
         //Player is drawn on the top most layer
         entities.get(0).draw(g);
-
-        currentLevel.drawWorld(g);
 
         g.dispose();
 

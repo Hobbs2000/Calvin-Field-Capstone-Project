@@ -82,6 +82,8 @@ public class Player extends Entity
      */
     public void draw(Graphics g)
     {
+        healthBar.scale(this.health);
+        healthBar.draw(g);
         if (isStill)
         {
             //Will render a still image of the player sprite if the player is still 
@@ -91,9 +93,6 @@ public class Player extends Entity
         {
             currentAnimation.draw(g);
         }
-        
-        healthBar.scale(this.health);
-        healthBar.draw(g);
     }
 
     /**
