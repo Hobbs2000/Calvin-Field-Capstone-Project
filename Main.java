@@ -65,6 +65,7 @@ public class Main extends Canvas implements Runnable
         try
         {
             level = new Level(ImageIO.read(getClass().getResource("/background_1.png")));
+            level.createWorld(getWidth(), getHeight());
         }
         catch (IOException e)
         {

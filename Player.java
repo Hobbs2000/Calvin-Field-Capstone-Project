@@ -42,7 +42,7 @@ public class Player extends Entity
 
         this.scale = scale;
         
-        healthBar = new HealthBar(startX - 30, startY - 20, 100, 20);
+        healthBar = new HealthBar(startX - 20, startY - 20, 80, 10);
 
         try
         {  
@@ -139,7 +139,7 @@ public class Player extends Entity
     {
         super.setX(newX);
         //Update health bar
-        healthBar.setLocation((newX - 30), (int)healthBar.getY());
+        healthBar.setLocation((newX - 20), (int)healthBar.getY());
         //Need to update all animation coordinates
         WALK_RIGHT_ANIMATION.update(super.getX(), super.getY());
         WALK_LEFT_ANIMATION.update(super.getX(), super.getY());

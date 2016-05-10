@@ -21,7 +21,6 @@ public class Level
     public Level(BufferedImage background)
     {
         this.background = background;
-        createWorld();
     }
 
     /**
@@ -30,10 +29,55 @@ public class Level
      * value determines which tile will be in that position.
      * After the 2d int array is created, it is passed into the interperetWorld method
      */
-    public void createWorld()
+    public void createWorld(int screenWidth, int screenHeight)
     {
+        //This randomly creates a level (could be a really garbage level)
+        //If the level is terrible, just restart until a decent one is created
+        int widthTiles = screenWidth / 32;
+        int heightTiles = screenHeight / 32;
+        int[][] worldCode = new int[heightTiles][widthTiles];
+        int currentPlatformLen = 0;
+        for (int r = 0; r < worldCode.length; r++)
+        {
+            for (int c = 0; c < worldCode[r].length; c++)
+            {
+                if ((r == 0 || c == 0 || r == (worldCode.length - 1) || c == (worldCode[r].length - 1)))
+                {
+                    worldCode[r][c] = 2;
+                }
+                else if ((currentPlatformLen <= 5 && r >= 4))
+                {
+                    //If the tile directly above is empty, make this tile a top soil tile
+                    if (((r-1) >= 0) && worldCode[r-1][c] == 0)
+                    {
+                        worldCode[r][c] = 1;
+                    }
+                    //If the tile directly above is not empty, make this a regular grass tile 
+                    else if (((r-1) >= 0) && worldCode[r-1][c] != 0)
+                    {
+                        worldCode[r][c] = 2;
+                    }
+                    currentPlatformLen++;
+                }
+                else
+                {
+                    worldCode[r][c] = 0;
+                }
+                
+                //Decides if a new Platform will be made
+                int makeNewPlatform = (int)(Math.random() * 100);
+                if ((makeNewPlatform > 20 && makeNewPlatform < 23) && currentPlatformLen >= 5)
+                {
+                    currentPlatformLen = 0;
+                }
+            }
+        }
+        
+        
         //Each number in the code array represents a different type of tile
-        int[][] code = {
+        //This is a preset level
+        /*
+        int[][] worldCode = {
                 {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
                 {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
                 {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
@@ -60,15 +104,17 @@ public class Level
                 {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
                 {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
                 {2,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,2},
-                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2},
-                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2},
+                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2},
+                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2},
+                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2},
+                {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2},
                 {2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2}
         };
+        */
+       
         //This turns the simple list of ints into a list of tiles
-        worldTiles = Level.interpretWorld(code);
+        worldTiles = Level.interpretWorld(worldCode);
     }
 
     /**
@@ -99,7 +145,8 @@ public class Level
     }
 
     /**
-     * Gets the tile at the specified coordinates
+     * Gets the tile at the specified coordinates,
+     * If no tile at those coordinates it returns a null reference
      * @param x The x coordinate (not the col index) 
      * @param y The y coordinate (not the row index)
      * @return 
@@ -122,7 +169,6 @@ public class Level
                 }
             }
         }
-
         return null;
     }
 
