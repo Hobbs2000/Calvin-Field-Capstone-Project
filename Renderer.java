@@ -44,7 +44,7 @@ public class Renderer implements Runnable
     }
     
     /**
-     * Displays the graphics on the screen
+     * Displays the graphics on the screen using active rendering by creating a BufferStrategy
      * Will repeat as many times as possible in a second (no cap) 
      */
     public void renderAll()
@@ -82,6 +82,7 @@ public class Renderer implements Runnable
             }
         }
 
+        //Draw the tiles in the world
         currentLevel.drawWorld(g);
         
         //Player is drawn on the top most layer

@@ -7,5 +7,5 @@ comment1.target=void\ run()
 comment1.text=\r\n\ Repeatedly\ calls\ the\ renderAll()\ method\r\n
 comment2.params=
 comment2.target=void\ renderAll()
-comment2.text=\r\n\ Displays\ the\ graphics\ on\ the\ screen\r\n\ Will\ repeat\ as\ many\ times\ as\ possible\ in\ a\ second\ (no\ cap)\ \r\n
+comment2.text=\r\n\ Displays\ the\ graphics\ on\ the\ screen\ using\ active\ rendering\ by\ creating\ a\ BufferStrategy\r\n\ Will\ repeat\ as\ many\ times\ as\ possible\ in\ a\ second\ (no\ cap)\ \r\n
 numComments=3
