@@ -104,7 +104,8 @@ public class Main extends Canvas implements Runnable
             for (Entity entity : entities)
             {
                 //This DOES NOT DRAW the entities to the screen
-                //It increases the animation count, allowing for a single set speed for every animation
+                //It increases the animation count at a consistant rate thanks to the delay
+                //This stops faster computer causing the animations to go faster than intended, and vice versa
                 entity.animate();
             }
             
