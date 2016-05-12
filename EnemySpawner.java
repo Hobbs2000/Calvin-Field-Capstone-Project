@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Calvin on 4/10/2016.
+ * Periodically spawns enemies
+ * Has different spawner methods for different types of enemies
  */
 public class EnemySpawner
 {
@@ -80,6 +82,8 @@ public class EnemySpawner
                 {
                     hasSpawned = true;              
                     //Any thread that uses/changes the entities ArrayList must be in a synchronized code block
+                    //This is because the list is spread across multiple threads
+                    //and synchronization prevents two threads trying to change the list at the same time
                     synchronized (entities)
                     {
                         //Adds a new zombie and creates a handler for it

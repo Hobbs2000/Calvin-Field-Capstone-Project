@@ -8,14 +8,6 @@ import java.awt.*;
 public class Enemy extends Entity
 {
     private int damage, health, speed;
-    private boolean canMoveUp = true;
-    private boolean movingUp = false;
-    private boolean canMoveDown = true;
-    private boolean movingDown = false;
-    private boolean canMoveRight = true;
-    private boolean movingRight = false;
-    private boolean canMoveLeft = true;
-    private boolean movingLeft = false;
 
     /**
      *
